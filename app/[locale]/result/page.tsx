@@ -1,4 +1,6 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
+
 import ResultClient from './ResultClient';
 import { getDictionary, getResultBucket, type Locale } from '../../../lib/dictionary';
 
@@ -33,5 +35,9 @@ export async function generateMetadata({
 }
 
 export default function Page({ params }: { params: { locale: Locale } }) {
-  return <ResultClient locale={params.locale} />;
+  return (
+    <Suspense>
+      <ResultClient locale={params.locale} />
+    </Suspense>
+  );
 }
