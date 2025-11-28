@@ -1,3 +1,5 @@
+import { Suspense } from 'react';
+
 import QuizClient from './QuizClient';
 import { type Locale } from '../../../lib/dictionary';
 
@@ -7,5 +9,9 @@ export default async function QuizPage({
   params: Promise<{ locale: Locale }>;
 }) {
   const { locale } = await params;
-  return <QuizClient locale={locale} />;
+  return (
+    <Suspense>
+      <QuizClient locale={locale} />
+    </Suspense>
+  );
 }

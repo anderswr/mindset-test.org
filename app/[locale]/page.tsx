@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getDictionary, type Locale } from '../../lib/dictionary';
+import TakerCounter from '../../components/TakerCounter';
 
 export default async function Page({
   params
@@ -8,9 +9,6 @@ export default async function Page({
 }) {
   const { locale } = await params;
   const dict = getDictionary(locale);
-  const participantCount = new Intl.NumberFormat(
-    locale === 'pt' ? 'pt-BR' : locale === 'no' ? 'nb-NO' : 'en-US'
-  ).format(48231);
 
   return (
     <main>
@@ -19,14 +17,16 @@ export default async function Page({
         <h1>{dict.landing.title}</h1>
         <p className="lead">{dict.landing.lead}</p>
         <div className="hero__actions">
-          <Link href={`/${locale}/quiz`} className="button button--primary">
+          <Link href={`/${locale}/quiz?reset=1`} className="button button--primary">
             {dict.landing.cta}
           </Link>
           <a className="button button--ghost" href="#metodologia">
             {dict.landing.secondaryCta}
           </a>
         </div>
-        <p className="pill pill--muted hero__count">{dict.landing.takerCountLabel(participantCount)}</p>
+        <p className="pill pill--muted hero__count">
+          <TakerCounter locale={locale} formatLabel={dict.landing.takerCountLabel} />
+        </p>
       </header>
 
       <section className="card highlights">
@@ -47,7 +47,7 @@ export default async function Page({
           ))}
         </div>
         <div className="methodology__cta">
-          <Link href={`/${locale}/quiz`} className="button button--primary">
+          <Link href={`/${locale}/quiz?reset=1`} className="button button--primary">
             {dict.landing.methodologyCta}
           </Link>
         </div>
