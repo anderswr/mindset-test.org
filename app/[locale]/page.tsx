@@ -1,16 +1,8 @@
 import Link from 'next/link';
-import { getDictionary, type Locale } from '../../lib/dictionary';
+import { getDictionary, locales, type Locale } from '../../lib/dictionary';
 
-export default async function Page({
-  params
-}: {
-  params: Promise<{ locale: Locale }>;
-}) {
-  const { locale } = await params;
-  const dict = getDictionary(locale);
-  const participantCount = new Intl.NumberFormat(
-    locale === 'pt' ? 'pt-BR' : locale === 'no' ? 'nb-NO' : 'en-US'
-  ).format(48231);
+export default function Page({ params }: { params: { locale: Locale } }) {
+  const dict = getDictionary(params.locale);
 
   return (
     <main>
@@ -19,14 +11,13 @@ export default async function Page({
         <h1>{dict.landing.title}</h1>
         <p className="lead">{dict.landing.lead}</p>
         <div className="hero__actions">
-          <Link href={`/${locale}/quiz`} className="button button--primary">
+          <Link href={`/${params.locale}/quiz`} className="button button--primary">
             {dict.landing.cta}
           </Link>
           <a className="button button--ghost" href="#metodologia">
             {dict.landing.secondaryCta}
           </a>
         </div>
-        <p className="pill pill--muted hero__count">{dict.landing.takerCountLabel(participantCount)}</p>
       </header>
 
       <section className="card highlights">
@@ -35,6 +26,15 @@ export default async function Page({
             <div key={item} className="pill">
               {item}
             </div>
+          ))}
+        </div>
+        <div className="language-switch" aria-label={dict.landing.languageLabel}>
+          {locales.map((locale) => (
+            <Link key={locale} href={`/${locale}`}>
+              <span className={`language-chip ${locale === params.locale ? 'is-active' : ''}`}>
+                {locale.toUpperCase()}
+              </span>
+            </Link>
           ))}
         </div>
       </section>
@@ -47,7 +47,7 @@ export default async function Page({
           ))}
         </div>
         <div className="methodology__cta">
-          <Link href={`/${locale}/quiz`} className="button button--primary">
+          <Link href={`/${params.locale}/quiz`} className="button button--primary">
             {dict.landing.methodologyCta}
           </Link>
         </div>

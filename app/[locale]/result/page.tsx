@@ -1,6 +1,4 @@
 import type { Metadata } from 'next';
-import { Suspense } from 'react';
-
 import ResultClient from './ResultClient';
 import { getDictionary, getResultBucket, type Locale } from '../../../lib/dictionary';
 
@@ -8,13 +6,12 @@ export async function generateMetadata({
   params,
   searchParams
 }: {
-  params: Promise<{ locale: Locale }>;
-  searchParams: Promise<{ score?: string }>;
+  params: { locale: Locale };
+  searchParams: { score?: string };
 }): Promise<Metadata> {
-  const [{ locale }, { score: rawScore }] = await Promise.all([params, searchParams]);
-  const dict = getDictionary(locale);
-  const score = Number(rawScore ?? 0);
-  const bucket = getResultBucket(score, locale);
+  const dict = getDictionary(params.locale);
+  const score = Number(searchParams?.score ?? 0);
+  const bucket = getResultBucket(score, params.locale);
 
   const title = `${dict.meta.title} — ${bucket.title}`;
   const description = bucket.summary;
@@ -25,7 +22,7 @@ export async function generateMetadata({
     openGraph: {
       title,
       description,
-      url: `/${locale}/result?score=${score}`
+      url: `/${params.locale}/result?score=${score}`
     },
     twitter: {
       title,
@@ -35,15 +32,6 @@ export async function generateMetadata({
   };
 }
 
-export default async function Page({
-  params
-}: {
-  params: Promise<{ locale: Locale }>;
-}) {
-  const { locale } = await params;
-  return (
-    <Suspense>
-      <ResultClient locale={locale} />
-    </Suspense>
-  );
+export default function Page({ params }: { params: { locale: Locale } }) {
+  return <ResultClient locale={params.locale} />;
 }
