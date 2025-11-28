@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { getDictionary, languageMeta, locales, type Locale } from '../../lib/dictionary';
 
@@ -6,8 +7,13 @@ export async function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
 
-export async function generateMetadata({ params }: { params: { locale: Locale } }): Promise<Metadata> {
-  const dict = getDictionary(params.locale);
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ locale: Locale }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const dict = getDictionary(locale);
   return {
     title: dict.meta.title,
     description: dict.meta.description,
@@ -18,15 +24,15 @@ export async function generateMetadata({ params }: { params: { locale: Locale } 
   };
 }
 
-export default function LocaleLayout({
+export default async function LocaleLayout({
   children,
   params
 }: {
-  children: React.ReactNode;
-  params: { locale: Locale };
+  children: ReactNode;
+  params: Promise<{ locale: Locale }>;
 }) {
-  const dict = getDictionary(params.locale);
-  const locale = params.locale;
+  const { locale } = await params;
+  const dict = getDictionary(locale);
 
   return (
     <div className="app-shell">

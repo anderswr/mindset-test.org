@@ -8,12 +8,13 @@ export async function generateMetadata({
   params,
   searchParams
 }: {
-  params: { locale: Locale };
-  searchParams: { score?: string };
+  params: Promise<{ locale: Locale }>;
+  searchParams: Promise<{ score?: string }>;
 }): Promise<Metadata> {
-  const dict = getDictionary(params.locale);
-  const score = Number(searchParams?.score ?? 0);
-  const bucket = getResultBucket(score, params.locale);
+  const [{ locale }, { score: rawScore }] = await Promise.all([params, searchParams]);
+  const dict = getDictionary(locale);
+  const score = Number(rawScore ?? 0);
+  const bucket = getResultBucket(score, locale);
 
   const title = `${dict.meta.title} — ${bucket.title}`;
   const description = bucket.summary;
@@ -24,7 +25,7 @@ export async function generateMetadata({
     openGraph: {
       title,
       description,
-      url: `/${params.locale}/result?score=${score}`
+      url: `/${locale}/result?score=${score}`
     },
     twitter: {
       title,
@@ -34,10 +35,15 @@ export async function generateMetadata({
   };
 }
 
-export default function Page({ params }: { params: { locale: Locale } }) {
+export default async function Page({
+  params
+}: {
+  params: Promise<{ locale: Locale }>;
+}) {
+  const { locale } = await params;
   return (
     <Suspense>
-      <ResultClient locale={params.locale} />
+      <ResultClient locale={locale} />
     </Suspense>
   );
 }

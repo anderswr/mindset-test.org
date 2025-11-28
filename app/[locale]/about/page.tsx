@@ -1,7 +1,12 @@
 import { getDictionary, type Locale } from '../../../lib/dictionary';
 
-export default function AboutPage({ params }: { params: { locale: Locale } }) {
-  const dict = getDictionary(params.locale);
+export default async function AboutPage({
+  params
+}: {
+  params: Promise<{ locale: Locale }>;
+}) {
+  const { locale } = await params;
+  const dict = getDictionary(locale);
   const page = dict.about;
 
   return (

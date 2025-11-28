@@ -1,10 +1,15 @@
 import Link from 'next/link';
 import { getDictionary, type Locale } from '../../lib/dictionary';
 
-export default function Page({ params }: { params: { locale: Locale } }) {
-  const dict = getDictionary(params.locale);
+export default async function Page({
+  params
+}: {
+  params: Promise<{ locale: Locale }>;
+}) {
+  const { locale } = await params;
+  const dict = getDictionary(locale);
   const participantCount = new Intl.NumberFormat(
-    params.locale === 'pt' ? 'pt-BR' : params.locale === 'no' ? 'nb-NO' : 'en-US'
+    locale === 'pt' ? 'pt-BR' : locale === 'no' ? 'nb-NO' : 'en-US'
   ).format(48231);
 
   return (
@@ -14,7 +19,7 @@ export default function Page({ params }: { params: { locale: Locale } }) {
         <h1>{dict.landing.title}</h1>
         <p className="lead">{dict.landing.lead}</p>
         <div className="hero__actions">
-          <Link href={`/${params.locale}/quiz`} className="button button--primary">
+          <Link href={`/${locale}/quiz`} className="button button--primary">
             {dict.landing.cta}
           </Link>
           <a className="button button--ghost" href="#metodologia">
@@ -42,7 +47,7 @@ export default function Page({ params }: { params: { locale: Locale } }) {
           ))}
         </div>
         <div className="methodology__cta">
-          <Link href={`/${params.locale}/quiz`} className="button button--primary">
+          <Link href={`/${locale}/quiz`} className="button button--primary">
             {dict.landing.methodologyCta}
           </Link>
         </div>

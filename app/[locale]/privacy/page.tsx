@@ -1,7 +1,12 @@
 import { getDictionary, type Locale } from '../../../lib/dictionary';
 
-export default function PrivacyPage({ params }: { params: { locale: Locale } }) {
-  const dict = getDictionary(params.locale);
+export default async function PrivacyPage({
+  params
+}: {
+  params: Promise<{ locale: Locale }>;
+}) {
+  const { locale } = await params;
+  const dict = getDictionary(locale);
   const page = dict.privacy;
 
   return (
