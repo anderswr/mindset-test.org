@@ -199,17 +199,17 @@ const questionPrompts: Record<Locale, Record<string, string>> = {
 
 const navigation: Record<Locale, Navigation> = {
   en: {
-    quiz: 'Take the test',
+    quiz: 'To the test',
     about: 'About',
     testInfo: 'About the book'
   },
   no: {
-    quiz: 'Start testen',
+    quiz: 'Til testen',
     about: 'Om',
     testInfo: 'Om boken'
   },
   pt: {
-    quiz: 'Fazer o teste',
+    quiz: 'Ir para o teste',
     about: 'Sobre',
     testInfo: 'Sobre o livro'
   }

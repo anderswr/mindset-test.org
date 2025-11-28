@@ -16,13 +16,10 @@ export default async function Page({
         <div className="hero__eyebrow">{dict.landing.eyebrow}</div>
         <h1>{dict.landing.title}</h1>
         <p className="lead">{dict.landing.lead}</p>
-        <div className="hero__actions">
+        <div className="hero__actions hero__actions--center">
           <Link href={`/${locale}/quiz?reset=1`} className="button button--primary">
             {dict.landing.cta}
           </Link>
-          <a className="button button--ghost" href="#metodologia">
-            {dict.landing.secondaryCta}
-          </a>
         </div>
         <p className="pill pill--muted hero__count">
           <TakerCounter locale={locale} formatLabel={dict.landing.takerCountLabel} />
@@ -46,11 +43,7 @@ export default async function Page({
             <p key={paragraph}>{paragraph}</p>
           ))}
         </div>
-        <div className="methodology__cta">
-          <Link href={`/${locale}/quiz?reset=1`} className="button button--primary">
-            {dict.landing.methodologyCta}
-          </Link>
-        </div>
+        <div className="methodology__cta" />
       </section>
 
       <footer className="page-footer">
