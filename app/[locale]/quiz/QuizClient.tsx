@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   computeScore,
@@ -22,6 +22,26 @@ export default function QuizClient({ locale }: QuizClientProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAdvancing, setIsAdvancing] = useState(false);
   const router = useRouter();
+
+  const storageKey = 'mindset-quiz-progress';
+
+  useEffect(() => {
+    try {
+      const stored = sessionStorage.getItem(storageKey);
+      if (!stored) return;
+      const parsed = JSON.parse(stored) as { answers?: Record<string, number>; currentIndex?: number };
+      if (parsed.answers) setAnswers(parsed.answers);
+      if (typeof parsed.currentIndex === 'number') {
+        setCurrentIndex(Math.min(parsed.currentIndex, questions.length - 1));
+      }
+    } catch {}
+  }, [storageKey, questions.length]);
+
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(storageKey, JSON.stringify({ answers, currentIndex }));
+    } catch {}
+  }, [answers, currentIndex, storageKey]);
 
   const answered = Object.keys(answers).length;
   const progress = Math.round((answered / questions.length) * 100);
@@ -54,6 +74,9 @@ export default function QuizClient({ locale }: QuizClientProps) {
     setAnswers({});
     setCurrentIndex(0);
     setIsAdvancing(false);
+    try {
+      sessionStorage.removeItem(storageKey);
+    } catch {}
   }
 
   function handleSubmit(nextAnswers?: Record<string, number>) {

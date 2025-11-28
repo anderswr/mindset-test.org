@@ -233,8 +233,9 @@ p {
 
 .likert {
   display: flex;
-  gap: 0.5rem;
-  overflow-x: auto;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  justify-content: center;
   padding: 0.35rem 0 0.6rem;
   scrollbar-width: thin;
 }
@@ -243,7 +244,7 @@ p {
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
-  padding: 0.65rem 0.75rem;
+  padding: 0.6rem 0.7rem;
   border: 1px solid var(--border);
   border-radius: 0.9rem;
   background: rgba(255, 255, 255, 0.03);
@@ -339,6 +340,16 @@ p {
   color: var(--muted);
 }
 
+.result-insight {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.result-insight h2 {
+  margin: 0;
+}
+
 .share {
   margin-top: 1.25rem;
   padding-top: 1rem;
@@ -385,6 +396,7 @@ p {
   justify-content: space-between;
   gap: 1rem;
   padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
   background: rgba(13, 16, 23, 0.9);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border);
@@ -403,6 +415,7 @@ p {
   align-items: center;
   flex-wrap: wrap;
   font-weight: 600;
+  font-size: 0.95rem;
 }
 
 .top-nav__links a {
@@ -446,10 +459,12 @@ p {
   border: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.02);
   font-weight: 600;
+  color: #fff;
 }
 
 .lang-select__label {
   white-space: nowrap;
+  color: #fff;
 }
 
 .lang-select__caret {
@@ -495,6 +510,7 @@ p {
 .lang-item.is-active {
   border-color: var(--accent-strong);
   background: rgba(20, 184, 166, 0.1);
+  color: #fff;
 }
 
 .language-menu {
@@ -521,6 +537,14 @@ p {
 
 .page-body {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.page-body > main {
+  width: 100%;
+  max-width: 1024px;
 }
 
 .hero__count {
@@ -580,8 +604,9 @@ p {
 
 .site-footer {
   border-top: 1px solid var(--border);
-  background: rgba(13, 16, 23, 0.85);
+  background: rgba(13, 16, 23, 0.95);
   margin-top: 2rem;
+  font-size: 0.9rem;
 }
 
 .footer-inner {
@@ -589,7 +614,9 @@ p {
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  padding: 12px 0;
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 0.9rem 1.5rem;
 }
 
 .footer-nav {

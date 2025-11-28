@@ -28,6 +28,13 @@ type ResultBucket = {
   advice: string;
 };
 
+type ResultInsight = {
+  id: ResultBucket['id'];
+  title: string;
+  body: string;
+  source: string;
+};
+
 type StaticSection = {
   title: string;
   body: string[];
@@ -103,6 +110,11 @@ export type Dictionary = {
     learnMore: string;
     restart: string;
     retake: string;
+    insights: {
+      title: string;
+      intro: string;
+      items: ResultInsight[];
+    };
   };
   about: StaticPage;
   testInfo: StaticPage;
@@ -499,7 +511,42 @@ const resultCopy: Record<Locale, Dictionary['results']> = {
     learnMore:
       'The sum of the statements guides your preference. Mindset is a continuum and can shift with each activity. Scores between 24 and 48 lean fixed, and 48 to 72 lean growth.',
     restart: 'Restart test',
-    retake: 'Retake answers'
+    retake: 'Retake answers',
+    insights: {
+      title: 'What your score can signal',
+      intro:
+        'These short notes blend Dweck’s mindset research with later studies on motivation. Use them as prompts for reflection, not as a diagnosis.',
+      items: [
+        {
+          id: 'fixed',
+          title: 'Fixed preference (24 or lower)',
+          body:
+            'You may prioritize proven strengths and consistency. Colleagues can experience you as reliable yet risk-averse. Try pairing outcomes with process goals and invite feedback on strategies to reduce the fear of “getting it wrong.”',
+          source: 'Based on Dweck (2006) and Burnette et al. (2013) meta-analyses of entity beliefs.'
+        },
+        {
+          id: 'fixedLean',
+          title: 'Fixed with flex (25–48)',
+          body:
+            'You can switch between protecting performance and experimenting. Others may see steadiness but also hesitation. Using if–then plans (implementation intentions) for practice time often helps convert hesitation into deliberate effort.',
+          source: 'See Dweck (2006) on mixed profiles and Gollwitzer & Sheeran (2006) on implementation intentions.'
+        },
+        {
+          id: 'growthLean',
+          title: 'Growth with guardrails (49–72)',
+          body:
+            'You typically embrace challenge but may default to “play it safe” when stakes feel high. Make effort visible (process praise) and keep mastery goals explicit so others read your drive as constructive, not relentless.',
+          source: 'Aligned with Dweck (2006) and mastery-goal framing effects summarized by Burnette et al. (2013).'
+        },
+        {
+          id: 'growth',
+          title: 'Growth preference (73 or higher)',
+          body:
+            'You likely persist through setbacks and radiate optimism. Peers may also need signals that you respect limits. Build in recovery time and invite challenge from others to avoid overextending your strengths.',
+          source: 'Draws on Dweck (2006) and research on resilience in growth-oriented climates (Yeager & Dweck, 2012).'
+        }
+      ]
+    }
   },
   no: {
     title: 'Resultater fra mindset-testen',
@@ -517,7 +564,42 @@ const resultCopy: Record<Locale, Dictionary['results']> = {
     learnMore:
       'Summen av påstandene er en veiledning til preferansen din. Mindset er et kontinuum og kan skifte med aktivitetene. Mellom 24 og 48 heller det mot fastlåst, og 48 til 72 heller mot vekst.',
     restart: 'Start testen på nytt',
-    retake: 'Gå tilbake til svarene'
+    retake: 'Gå tilbake til svarene',
+    insights: {
+      title: 'Hva poengsummen kan tyde på',
+      intro:
+        'Notatene kobler Dwecks mindset-forskning med nyere funn om motivasjon. Se dem som refleksjonshjelp, ikke en diagnose.',
+      items: [
+        {
+          id: 'fixed',
+          title: 'Fastlåst preferanse (24 eller lavere)',
+          body:
+            'Du vektlegger kanskje stabile styrker og forutsigbarhet. Andre kan oppleve deg som pålitelig, men forsiktig. Kombiner resultatmål med prosessmål og be om tilbakemeldinger på strategier for å dempe frykten for å “gjøre feil.”',
+          source: 'Bygger på Dweck (2006) og Burnette mfl. (2013) om effekten av entitetsoppfatninger.'
+        },
+        {
+          id: 'fixedLean',
+          title: 'Fast med litt fleks (25–48)',
+          body:
+            'Du kan veksle mellom å beskytte prestasjonen og å prøve noe nytt. Andre kan se deg som stødig, men nølende. If–then-planer (implementeringsintensjoner) for øvingstid hjelper ofte med å gjøre nøling om til målrettet innsats.',
+          source: 'Se Dweck (2006) om blandede profiler og Gollwitzer & Sheeran (2006) om implementeringsintensjoner.'
+        },
+        {
+          id: 'growthLean',
+          title: 'Vekst med rekkverk (49–72)',
+          body:
+            'Du omfavner vanligvis utfordringer, men kan falle tilbake på “sikkert” når innsatsen virker høy. Gjør innsats synlig (prosessros) og hold mestringsmål tydelige, slik at andre leser driven din som konstruktiv og ikke masete.',
+          source: 'I tråd med Dweck (2006) og mestringsorienteringseffekter oppsummert av Burnette mfl. (2013).'
+        },
+        {
+          id: 'growth',
+          title: 'Vekstpreferanse (73 eller høyere)',
+          body:
+            'Du står trolig i motgang og utstråler optimisme. Andre trenger også signaler om at du respekterer grenser. Legg inn pauser og inviter andres innspill for å unngå å strekke styrkene for langt.',
+          source: 'Henter fra Dweck (2006) og forskning på robusthet i vekstorienterte miljøer (Yeager & Dweck, 2012).'
+        }
+      ]
+    }
   },
   pt: {
     title: 'Resultados do Teste de Mindset',
@@ -535,7 +617,42 @@ const resultCopy: Record<Locale, Dictionary['results']> = {
     learnMore:
       'A faixa intermediária entre 24 e 72 pontos indica que o mindset pode variar conforme a atividade. Use isso como um convite para questionar crenças fixas e experimentar mudanças graduais.',
     restart: 'Refazer teste',
-    retake: 'Voltar às respostas'
+    retake: 'Voltar às respostas',
+    insights: {
+      title: 'O que sua pontuação sinaliza',
+      intro:
+        'Estes apontamentos unem a pesquisa de Dweck sobre mindset e estudos posteriores de motivação. Use-os como pistas de reflexão, não como diagnóstico.',
+      items: [
+        {
+          id: 'fixed',
+          title: 'Preferência fixa (24 ou menos)',
+          body:
+            'Você pode priorizar forças comprovadas e previsibilidade. As pessoas podem vê-lo como confiável, mas avesso a riscos. Combine metas de resultado com metas de processo e peça feedback sobre estratégias para reduzir o medo de “errar”.',
+          source: 'Com base em Dweck (2006) e nas meta-análises de Burnette et al. (2013) sobre crenças de entidade.'
+        },
+        {
+          id: 'fixedLean',
+          title: 'Fixo com alguma flexibilidade (25–48)',
+          body:
+            'Você alterna entre proteger a performance e experimentar. Outros podem perceber firmeza, mas também hesitação. Planos se–então (intenções de implementação) para momentos de prática ajudam a transformar hesitação em esforço deliberado.',
+          source: 'Veja Dweck (2006) sobre perfis mistos e Gollwitzer & Sheeran (2006) sobre intenções de implementação.'
+        },
+        {
+          id: 'growthLean',
+          title: 'Crescimento com corrimãos (49–72)',
+          body:
+            'Você costuma abraçar desafios, mas pode recorrer ao “seguro” quando o risco parece alto. Torne o esforço visível (elogio de processo) e mantenha metas de maestria explícitas para que sua disposição seja lida como construtiva, não insistente.',
+          source: 'Alinhado a Dweck (2006) e aos efeitos de metas de maestria resumidos por Burnette et al. (2013).'
+        },
+        {
+          id: 'growth',
+          title: 'Preferência por crescimento (73 ou mais)',
+          body:
+            'Você tende a persistir diante de obstáculos e transmite otimismo. Colegas também precisam ver que você respeita limites. Inclua pausas e convide desafios de outras pessoas para não extrapolar suas próprias forças.',
+          source: 'Baseado em Dweck (2006) e pesquisas sobre resiliência em contextos de crescimento (Yeager & Dweck, 2012).'
+        }
+      ]
+    }
   }
 };
 
@@ -581,15 +698,19 @@ const aboutPage: Record<Locale, StaticPage> = {
       {
         title: 'Privacy policy',
         body: [
-          'We take privacy seriously. This statement explains how we handle information when you use www.sleep-test.org. Using the site confirms you have read and accepted these terms.',
-          'We do not collect names, email addresses, or other directly identifiable information. A technical ID together with a summary of answers is used only to show and remember results.',
-          'The purpose is to deliver the service and improve quality. The legal basis is legitimate interest (GDPR art. 6(1)(f)) to operate a secure and well-functioning solution without processing personal data. Technical logs may be processed for troubleshooting and security.',
-          'Technical IDs and result summaries are stored only as long as necessary. If you believe content should be deleted, contact kontor@dmz.no.',
-          'We do not share data with third parties. Any processors we rely on for operations must protect data and cannot use it for their own purposes.',
-          'Schools can use the service without providing student data. The site works without registration and avoids personal information beyond what is strictly necessary for technical operation.',
-          'We use no unnecessary cookies. If functional cookies are added in the future (for example to remember language), this statement will be updated and consent requested when required.',
-          'Questions, access requests for technical information, or deletion inquiries can be sent to kontor@dmz.no. You can also complain to the Norwegian Data Protection Authority.',
-          'We may update this statement as needed. Significant changes will be published here.'
+          'Made by DMZ DATA AS.',
+          'Built pro bono in Porsgrunn, focused on healthtech/sleeptech and AI.',
+          'DMZ DATA AS is responsible for www.sleep-test.org. Contact point for privacy and general inquiries: kontor@dmz.no.',
+          'Explore DMZ DATA creations at www.dmz.no, the app for learning Google web search (LINK), the app for learning ChatGPT (LINK), and make your Homey smart home more fun with DadJokes (LINK).',
+          'We take privacy seriously. This declaration explains how we process information when you use www.sleep-test.org. By using the site you confirm you have read and accepted these terms. The site is designed so schools can use it without supplying personal data.',
+          'What we process: we do not collect names, email addresses, or other directly identifiable information. To show and remember results, only a technical ID and an answer summary are used. We use no marketing cookies, third-party tracking scripts, or profiling.',
+          'Purpose and legal basis: the purpose is to deliver the service and improve quality. The basis is legitimate interest (GDPR art. 6(1)(f)) to run a secure, well-functioning solution without handling personal data. Technical logs may be processed for troubleshooting and security.',
+          'Storage and deletion: technical IDs and summaries are kept only as long as needed for the stated purpose. If you think content should be deleted, contact us at kontor@dmz.no.',
+          'Sharing and transfer: we do not share data with third parties. If we use processors for operations, they are contractually bound to protect data and not use it for their own purposes.',
+          'School use and children: the service can be used in schools without providing student data. Teachers and pupils can read and use the site without registration. No personal data is processed beyond what is strictly necessary for technical operation.',
+          'Cookies: we use no unnecessary cookies. If functional cookies are introduced later (e.g., to remember language), we will update this declaration and request consent where required.',
+          'Your rights and contact: questions, requests for access to technical information, or deletion requests can be sent to kontor@dmz.no. You can also complain to the Norwegian Data Protection Authority.',
+          'Changes: we may update this declaration when needed. Significant changes will be published here.'
         ]
       }
     ]
@@ -635,15 +756,19 @@ const aboutPage: Record<Locale, StaticPage> = {
       {
         title: 'Personvernerklæring',
         body: [
+          'Laget av DMZ DATA AS.',
+          'Laget på dugnad i Porsgrunn, helsetech/søvntech og AI.',
+          'Ansvarlig for www.sleep-test.org er DMZ DATA AS. Kontaktpunkt for personvern og generelle henvendelser: kontor@dmz.no.',
+          'Utforsk DMZ DATA-underverker på www.dmz.no, App for å lære Google web search (LINK), App for å lære ChatGPT (LINK) og gjør Homey smarthuset ditt litt mer gøy med DadJokes (LINK).',
           'Vi tar personvern på alvor. Denne erklæringen forklarer hvordan vi behandler opplysninger når du bruker www.sleep-test.org. Ved å bruke nettstedet bekrefter du at du har lest og akseptert disse vilkårene. Nettstedet er designet slik at skoler kan bruke tjenesten uten å oppgi personopplysninger.',
-          'Vi samler ikke inn navn, e-postadresse eller annen direkte identifiserbar informasjon. For å vise og huske resultater brukes kun en teknisk generert ID lagret sammen med en oppsummering av svarene. Vi bruker ingen markedsførings-cookies, tredjeparts sporingsskript eller profilering.',
-          'Formålet er å levere tjenesten og forbedre kvaliteten. Behandlingsgrunnlaget er berettiget interesse (GDPR art. 6(1)(f)) i å drive en sikker og velfungerende løsning uten behandling av personopplysninger. Eventuelle tekniske logger kan behandles for feilsøking og sikkerhet.',
-          'Tekniske ID-er og resultatoppsummeringer lagres bare så lenge det er nødvendig for formålet. Dersom du mener innhold bør slettes, kan du kontakte oss på kontor@dmz.no.',
-          'Vi deler ikke data med tredjeparter. Dersom vi bruker underleverandører (databehandlere) for drift, vil de være kontraktsmessig forpliktet til å beskytte data og ikke bruke dem til egne formål.',
-          'Tjenesten kan brukes i skole uten å oppgi elevdata. Lærere og elever kan lese og bruke nettstedet uten registrering. Det behandles ikke personopplysninger utover det som er strengt nødvendig for teknisk drift.',
-          'Vi bruker ingen unødvendige cookies. Dersom vi i fremtiden innfører funksjonelle cookies (f.eks. for språkvalg), vil vi oppdatere denne erklæringen og be om samtykke der det kreves.',
-          'Har du spørsmål, ønsker innsyn i tekniske opplysninger, eller vil be om sletting, kontakt oss på kontor@dmz.no. Du kan også klage til Datatilsynet.',
-          'Vi kan oppdatere denne erklæringen ved behov. Vesentlige endringer publiseres her.'
+          'Hvilke data vi behandler: Vi samler ikke inn navn, e-postadresse eller annen direkte identifiserbar informasjon. For å vise og huske resultater brukes kun en teknisk generert ID lagret sammen med en oppsummering av svarene. Vi bruker ingen markedsførings-cookies, tredjeparts sporingsskript eller profilering.',
+          'Formål og behandlingsgrunnlag: Formålet er å levere tjenesten og forbedre kvaliteten. Behandlingsgrunnlaget er berettiget interesse (GDPR art. 6(1)(f)) i å drive en sikker og velfungerende løsning uten behandling av personopplysninger. Eventuelle tekniske logger kan behandles for feilsøking og sikkerhet.',
+          'Lagring og sletting: Tekniske ID-er og resultatoppsummeringer lagres bare så lenge det er nødvendig for formålet. Dersom du mener innhold bør slettes, kan du kontakte oss på kontor@dmz.no.',
+          'Deling og overføring: Vi deler ikke data med tredjeparter. Dersom vi bruker underleverandører (databehandlere) for drift, vil de være kontraktsmessig forpliktet til å beskytte data og ikke bruke dem til egne formål.',
+          'Skolebruk og barn: Tjenesten kan brukes i skole uten å oppgi elevdata. Lærere og elever kan lese og bruke nettstedet uten registrering. Det behandles ikke personopplysninger utover det som er strengt nødvendig for teknisk drift.',
+          'Informasjonskapsler (cookies): Vi bruker ingen unødvendige cookies. Dersom vi i fremtiden innfører funksjonelle cookies (f.eks. for språkvalg), vil vi oppdatere denne erklæringen og be om samtykke der det kreves.',
+          'Dine rettigheter og kontakt: Har du spørsmål, ønsker innsyn i tekniske opplysninger, eller vil be om sletting, kontakt oss på kontor@dmz.no. Du kan også klage til Datatilsynet.',
+          'Endringer: Vi kan oppdatere denne erklæringen ved behov. Vesentlige endringer publiseres her.'
         ]
       }
     ]
@@ -689,15 +814,19 @@ const aboutPage: Record<Locale, StaticPage> = {
       {
         title: 'Política de privacidade',
         body: [
+          'Feito pela DMZ DATA AS.',
+          'Construído em mutirão em Porsgrunn, com foco em healthtech, sleeptech e IA.',
+          'A DMZ DATA AS é responsável por www.sleep-test.org. Contato para privacidade e dúvidas gerais: kontor@dmz.no.',
+          'Explore as criações da DMZ DATA em www.dmz.no, o app para aprender a busca do Google (LINK), o app para aprender ChatGPT (LINK) e deixe sua casa inteligente Homey mais divertida com DadJokes (LINK).',
           'Levamos privacidade a sério. Esta declaração explica como tratamos informações ao usar www.sleep-test.org. Ao usar o site, você confirma que leu e aceitou estes termos. O site foi desenhado para que escolas possam usar o serviço sem fornecer dados pessoais.',
-          'Não coletamos nome, e-mail ou outras informações diretamente identificáveis. Para exibir e lembrar resultados, usamos apenas um ID técnico gerado junto com um resumo das respostas. Não usamos cookies de marketing, scripts de rastreamento de terceiros ou criação de perfis.',
-          'O objetivo é entregar o serviço e melhorar a qualidade. A base legal é interesse legítimo (GDPR art. 6(1)(f)) para operar uma solução segura e funcional sem processar dados pessoais. Logs técnicos podem ser tratados para depuração e segurança.',
-          'IDs técnicos e resumos de resultados são armazenados apenas pelo tempo necessário. Se você acredita que algo deve ser removido, escreva para kontor@dmz.no.',
-          'Não compartilhamos dados com terceiros. Se usarmos operadores (processadores) para a operação, eles serão contratualmente obrigados a proteger os dados e não utilizá-los para fins próprios.',
-          'Escolas podem usar o serviço sem informar dados de alunos. Professores e alunos podem ler e usar o site sem registro. Não tratamos dados pessoais além do estritamente necessário para a operação técnica.',
-          'Não usamos cookies desnecessários. Se no futuro adicionarmos cookies funcionais (por exemplo, para lembrar idioma), esta declaração será atualizada e pediremos consentimento quando for exigido.',
-          'Dúvidas, pedidos de acesso a informações técnicas ou solicitações de exclusão podem ser enviados para kontor@dmz.no. Você também pode registrar reclamação na autoridade de proteção de dados de seu país.',
-          'Podemos atualizar esta declaração quando necessário. Mudanças relevantes serão publicadas aqui.'
+          'Quais dados processamos: não coletamos nome, e-mail ou outras informações diretamente identificáveis. Para exibir e lembrar resultados, usamos apenas um ID técnico gerado com um resumo das respostas. Não usamos cookies de marketing, scripts de rastreamento de terceiros ou criação de perfis.',
+          'Finalidade e base legal: o objetivo é entregar o serviço e melhorar a qualidade. A base é interesse legítimo (GDPR art. 6(1)(f)) para operar uma solução segura e funcional sem processar dados pessoais. Logs técnicos podem ser tratados para depuração e segurança.',
+          'Armazenamento e exclusão: IDs técnicos e resumos são guardados somente pelo tempo necessário. Se você achar que algo deve ser removido, escreva para kontor@dmz.no.',
+          'Compartilhamento e transferência: não compartilhamos dados com terceiros. Se usarmos operadores (processadores) para a operação, eles serão contratualmente obrigados a proteger os dados e não utilizá-los para fins próprios.',
+          'Uso em escolas e crianças: o serviço pode ser usado em escolas sem informar dados de alunos. Professores e alunos podem acessar e usar o site sem registro. Não tratamos dados pessoais além do estritamente necessário para a operação técnica.',
+          'Cookies: não usamos cookies desnecessários. Se no futuro adicionarmos cookies funcionais (por exemplo, para lembrar idioma), atualizaremos esta declaração e pediremos consentimento quando exigido.',
+          'Seus direitos e contato: dúvidas, pedidos de acesso a informações técnicas ou solicitações de exclusão podem ser enviados para kontor@dmz.no. Você também pode registrar reclamação na autoridade de proteção de dados.',
+          'Mudanças: podemos atualizar esta declaração quando necessário. Mudanças relevantes serão publicadas aqui.'
         ]
       }
     ]

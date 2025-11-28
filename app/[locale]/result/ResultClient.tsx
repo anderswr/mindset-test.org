@@ -24,6 +24,10 @@ export default function ResultClient({ locale }: { locale: Locale }) {
   const bucket = useMemo(() => getResultBucket(score, locale), [score, locale]);
   const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
   const shareLinks = buildShareUrl(shareUrl, bucket.title);
+  const insight = useMemo(
+    () => dict.results.insights.items.find((item) => item.id === bucket.id),
+    [bucket.id, dict.results.insights.items]
+  );
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -92,6 +96,16 @@ export default function ResultClient({ locale }: { locale: Locale }) {
           </div>
         </div>
       </section>
+
+      {insight && (
+        <section className="card result-insight">
+          <p className="eyebrow">{dict.results.insights.title}</p>
+          <h2>{insight.title}</h2>
+          <p>{dict.results.insights.intro}</p>
+          <p>{insight.body}</p>
+          <p className="hint">{insight.source}</p>
+        </section>
+      )}
     </main>
   );
 }

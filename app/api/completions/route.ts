@@ -1,20 +1,42 @@
 import { NextResponse } from 'next/server';
 
+const COUNT_API_URL = 'https://api.countapi.xyz';
 const globalState = globalThis as typeof globalThis & { __completionCount?: number };
 
-function getCount() {
+function fallbackCount(next?: number) {
   if (typeof globalState.__completionCount !== 'number') {
     globalState.__completionCount = 0;
+  }
+  if (typeof next === 'number') {
+    globalState.__completionCount = next;
   }
   return globalState.__completionCount;
 }
 
+async function fetchCount(method: 'get' | 'hit') {
+  const namespace = process.env.COUNT_API_NAMESPACE ?? 'mindset-test-org';
+  const key = process.env.COUNT_API_KEY ?? 'global';
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 3500);
+
+  try {
+    const endpoint = `${COUNT_API_URL}/${method}/${namespace}/${key}`;
+    const res = await fetch(endpoint, { signal: controller.signal, cache: 'no-store' });
+    if (!res.ok) throw new Error('count api error');
+    const data = (await res.json()) as { value?: number };
+    if (typeof data.value === 'number') return data.value;
+  } finally {
+    clearTimeout(timeout);
+  }
+  return undefined;
+}
+
 export async function GET() {
-  return NextResponse.json({ count: getCount() });
+  const value = await fetchCount('get');
+  return NextResponse.json({ count: fallbackCount(value) });
 }
 
 export async function POST() {
-  const current = getCount();
-  globalState.__completionCount = current + 1;
-  return NextResponse.json({ count: globalState.__completionCount });
+  const value = await fetchCount('hit');
+  return NextResponse.json({ count: fallbackCount(value ?? fallbackCount() + 1) });
 }
