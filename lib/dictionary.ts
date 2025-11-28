@@ -2,6 +2,12 @@ export type Locale = 'en' | 'no' | 'pt';
 
 export const locales: Locale[] = ['en', 'no', 'pt'];
 
+export const languageMeta: Record<Locale, { label: string; flag: string }> = {
+  en: { label: 'English', flag: '🇺🇸' },
+  no: { label: 'Norsk', flag: '🇳🇴' },
+  pt: { label: 'Português', flag: '🇧🇷' }
+};
+
 type LikertOption = {
   label: string;
   value: number;
@@ -22,6 +28,25 @@ type ResultBucket = {
   advice: string;
 };
 
+type StaticSection = {
+  title: string;
+  body: string[];
+};
+
+type StaticPage = {
+  title: string;
+  intro: string;
+  sections: StaticSection[];
+};
+
+type Navigation = {
+  home: string;
+  quiz: string;
+  about: string;
+  privacy: string;
+  testInfo: string;
+};
+
 type ShareNetwork = {
   id: 'twitter' | 'linkedin' | 'facebook';
   label: string;
@@ -32,6 +57,7 @@ type Dictionary = {
     title: string;
     description: string;
   };
+  navigation: Navigation;
   landing: {
     eyebrow: string;
     title: string;
@@ -44,6 +70,7 @@ type Dictionary = {
     methodologyBody: string[];
     methodologyCta: string;
     languageLabel: string;
+    takerCountLabel: (count: string) => string;
   };
   quiz: {
     title: string;
@@ -57,6 +84,9 @@ type Dictionary = {
     likertOptions: LikertOption[];
     completionHint: string;
     back: string;
+    previous: string;
+    next: string;
+    autoAdvance: string;
   };
   results: {
     title: string;
@@ -71,6 +101,9 @@ type Dictionary = {
     restart: string;
     retake: string;
   };
+  about: StaticPage;
+  privacy: StaticPage;
+  testInfo: StaticPage;
 };
 
 const baseQuestions: Array<Pick<Question, 'id' | 'number' | 'orientation'>> = [
@@ -146,6 +179,30 @@ const questionPrompts: Record<Locale, Record<string, string>> = {
     'talento-14': 'Você pode aprender coisas novas, mas realmente não pode alterar o seu nível básico de talento.',
     'talento-15': 'Independentemente do talento que você possui, você pode sempre alterá-lo substancialmente.',
     'talento-16': 'Você pode alterar até mesmo o seu nível básico de talento consideravelmente.'
+  }
+};
+
+const navigation: Record<Locale, Navigation> = {
+  en: {
+    home: 'Home',
+    quiz: 'Take the test',
+    about: 'About',
+    privacy: 'Privacy',
+    testInfo: 'About the book'
+  },
+  no: {
+    home: 'Forside',
+    quiz: 'Start testen',
+    about: 'Om',
+    privacy: 'Personvern',
+    testInfo: 'Om boken'
+  },
+  pt: {
+    home: 'Início',
+    quiz: 'Fazer o teste',
+    about: 'Sobre',
+    privacy: 'Privacidade',
+    testInfo: 'Sobre o livro'
   }
 };
 
@@ -331,7 +388,8 @@ const landing: Record<Locale, Dictionary['landing']> = {
       'Some questions are reverse scored; the calculation happens automatically. When you finish, you get a clear result aligned with the interpretation ranges from the source material.'
     ],
     methodologyCta: 'Begin now',
-    languageLabel: 'Language'
+    languageLabel: 'Language',
+    takerCountLabel: (count) => `${count} people have completed the test`
   },
   no: {
     eyebrow: 'Test for fastlåst vs. vekstmindset',
@@ -352,7 +410,8 @@ const landing: Record<Locale, Dictionary['landing']> = {
       'Noen spørsmål er omvendt skåret; beregningen skjer automatisk. Når du er ferdig, får du et tydelig resultat i tråd med tolkningsintervallene fra kilden.'
     ],
     methodologyCta: 'Begynn nå',
-    languageLabel: 'Språk'
+    languageLabel: 'Språk',
+    takerCountLabel: (count) => `${count} har tatt testen`
   },
   pt: {
     eyebrow: 'Teste Mindset Fixo x Crescimento',
@@ -373,7 +432,8 @@ const landing: Record<Locale, Dictionary['landing']> = {
       'Algumas perguntas são pontuadas de forma invertida, e todo o cálculo é aplicado automaticamente para você. Ao concluir, você recebe um resultado alinhado às faixas originais.'
     ],
     methodologyCta: 'Iniciar agora',
-    languageLabel: 'Idioma'
+    languageLabel: 'Idioma',
+    takerCountLabel: (count) => `${count} pessoas já concluíram o teste`
   }
 };
 
@@ -388,7 +448,10 @@ const quizCopy: Record<Locale, Omit<Dictionary['quiz'], 'questions' | 'likertOpt
     secondaryCta: 'Reset test',
     likertLabel: 'Choose your level of agreement',
     completionHint: 'Answer all statements to unlock the result.',
-    back: '← Back'
+    back: '← Back',
+    previous: 'Previous',
+    next: 'Next',
+    autoAdvance: 'Moving to the next statement…'
   },
   no: {
     title: 'Svar på påstandene',
@@ -400,7 +463,10 @@ const quizCopy: Record<Locale, Omit<Dictionary['quiz'], 'questions' | 'likertOpt
     secondaryCta: 'Tilbakestill test',
     likertLabel: 'Velg graden av enighet',
     completionHint: 'Svar på alle påstandene for å låse opp resultatet.',
-    back: '← Tilbake'
+    back: '← Tilbake',
+    previous: 'Forrige',
+    next: 'Neste',
+    autoAdvance: 'Går videre til neste påstand…'
   },
   pt: {
     title: 'Responda às afirmações',
@@ -412,7 +478,10 @@ const quizCopy: Record<Locale, Omit<Dictionary['quiz'], 'questions' | 'likertOpt
     secondaryCta: 'Reiniciar teste',
     likertLabel: 'Escolha seu nível de concordância',
     completionHint: 'Responda todas as afirmações para liberar o resultado.',
-    back: '← Voltar'
+    back: '← Voltar',
+    previous: 'Anterior',
+    next: 'Próxima',
+    autoAdvance: 'Indo para a próxima afirmação…'
   }
 };
 
@@ -473,36 +542,231 @@ const resultCopy: Record<Locale, Dictionary['results']> = {
   }
 };
 
+const aboutPage: Record<Locale, StaticPage> = {
+  en: {
+    title: 'About this project',
+    intro:
+      'This single-page assessment mirrors the fixed vs. growth mindset questionnaire shared in Carol S. Dweck’s book “Mindset”. The experience is intentionally lightweight: choose your language, answer the statements, and get an instant score.',
+    sections: [
+      {
+        title: 'What to expect',
+        body: [
+          'The Likert scale follows the original 1–6 pattern so scores stay compatible with the ranges described by Dweck.',
+          'No accounts or storage are needed. Results are computed locally in your browser and never saved to a database.'
+        ]
+      },
+      {
+        title: 'Why it feels like sleep-test.org',
+        body: [
+          'The flow borrows the clean, CTA-first layout from sleep-test.org so you can start quickly, stay focused on one statement at a time, and share the outcome just as easily.'
+        ]
+      }
+    ]
+  },
+  no: {
+    title: 'Om prosjektet',
+    intro:
+      'Dette enkle skjemaet speiler spørresettet for fastlåst vs. vekstmindset fra Carol S. Dwecks bok “Mindset”. Opplevelsen er lett: velg språk, svar på påstandene og få en umiddelbar score.',
+    sections: [
+      {
+        title: 'Hva du kan forvente',
+        body: [
+          'Likert-skalaen følger originalen med 1–6 slik at poengsummen er kompatibel med intervallene Dweck beskriver.',
+          'Det trengs ingen konto eller lagring. Resultatet beregnes lokalt i nettleseren din og lagres ikke i en database.'
+        ]
+      },
+      {
+        title: 'Hvorfor den ligner sleep-test.org',
+        body: [
+          'Flyten låner den rene, handlingsrettede opplevelsen fra sleep-test.org slik at du kan starte raskt, holde fokus på én påstand av gangen og dele resultatet like enkelt.'
+        ]
+      }
+    ]
+  },
+  pt: {
+    title: 'Sobre o projeto',
+    intro:
+      'Este questionário reproduz a avaliação de mindset fixo x crescimento apresentada no livro “Mindset”, de Carol S. Dweck. A experiência é leve: escolha o idioma, responda às afirmações e veja o resultado imediatamente.',
+    sections: [
+      {
+        title: 'O que esperar',
+        body: [
+          'A escala Likert segue o padrão original de 1 a 6 para manter a compatibilidade com as faixas descritas por Dweck.',
+          'Não é preciso criar conta nem armazenamos seus dados. O cálculo acontece no seu navegador e não é salvo em nenhum banco de dados.'
+        ]
+      },
+      {
+        title: 'Por que lembra o sleep-test.org',
+        body: [
+          'O fluxo aproveita o layout claro e direto do sleep-test.org para que você comece rápido, responda uma afirmação por vez e compartilhe o resultado com a mesma facilidade.'
+        ]
+      }
+    ]
+  }
+};
+
+const privacyPage: Record<Locale, StaticPage> = {
+  en: {
+    title: 'Privacy',
+    intro: 'We designed this test to work without storing or transmitting personal data.',
+    sections: [
+      {
+        title: 'No accounts, no tracking',
+        body: [
+          'All scoring happens in the browser. We do not use cookies for analytics or ads, and we do not persist your answers.',
+          'Sharing is optional; if you tap share, only the result URL and title are sent to the network you choose.'
+        ]
+      },
+      {
+        title: 'Open source',
+        body: ['The codebase is available on GitHub so you can inspect, fork, or self-host the experience.']
+      }
+    ]
+  },
+  no: {
+    title: 'Personvern',
+    intro: 'Vi har laget testen slik at den fungerer uten å lagre eller sende persondata.',
+    sections: [
+      {
+        title: 'Ingen konto, ingen sporing',
+        body: [
+          'All beregning skjer i nettleseren. Vi bruker ikke informasjonskapsler til analyse eller annonser, og svarene dine lagres ikke.',
+          'Deling er valgfritt; hvis du trykker del, sendes kun resultat-lenken og tittelen til nettverket du velger.'
+        ]
+      },
+      {
+        title: 'Åpen kildekode',
+        body: ['Kodebasen ligger på GitHub slik at du kan inspisere, forke eller drifte den selv.']
+      }
+    ]
+  },
+  pt: {
+    title: 'Privacidade',
+    intro: 'O teste foi pensado para funcionar sem armazenar ou transmitir dados pessoais.',
+    sections: [
+      {
+        title: 'Sem conta, sem rastreamento',
+        body: [
+          'Todo o cálculo acontece no navegador. Não usamos cookies para análises ou anúncios, e suas respostas não são salvas.',
+          'Compartilhar é opcional; ao compartilhar, apenas a URL e o título do resultado são enviados para a rede escolhida.'
+        ]
+      },
+      {
+        title: 'Código aberto',
+        body: ['O código está no GitHub para que você possa revisar, fazer fork ou hospedar por conta própria.']
+      }
+    ]
+  }
+};
+
+const testInfoPage: Record<Locale, StaticPage> = {
+  en: {
+    title: 'About Carol S. Dweck and the mindset test',
+    intro:
+      'Psychologist Carol S. Dweck introduced the idea of fixed and growth mindsets in her book “Mindset: The New Psychology of Success”. The 16 statements here reflect the self-assessment she describes for understanding how we view intelligence and talent.',
+    sections: [
+      {
+        title: 'Fixed vs. growth',
+        body: [
+          'A fixed mindset treats intelligence and talent as static traits, while a growth mindset sees them as malleable through effort, feedback, and strategy.',
+          'Dweck’s research highlights that adopting a growth mindset can expand learning, resilience, and willingness to take on challenges.'
+        ]
+      },
+      {
+        title: 'About the statements',
+        body: [
+          'Items 1, 2, 4, 6, 9, 10, 12, and 14 are scored 1–6 from “Strongly agree” to “Strongly disagree”. Items 3, 5, 7, 8, 11, 13, 15, and 16 are reverse scored, matching the structure presented in the book.',
+          'Scores between 24–48 lean fixed, 48–72 lean growth, and the extremes illustrate the spectrum described in Dweck’s guidance.'
+        ]
+      }
+    ]
+  },
+  no: {
+    title: 'Om Carol S. Dweck og mindset-testen',
+    intro:
+      'Psykologen Carol S. Dweck introduserte begrepene fastlåst og vekstmindset i boken “Mindset: The New Psychology of Success”. De 16 påstandene her speiler egenvurderingen hun beskriver for å forstå hvordan vi ser på intelligens og talent.',
+    sections: [
+      {
+        title: 'Fastlåst vs. vekst',
+        body: [
+          'Et fastlåst mindset ser på intelligens og talent som statiske egenskaper, mens et vekstmindset ser dem som formbare gjennom innsats, tilbakemeldinger og gode strategier.',
+          'Dwecks forskning viser at et vekstmindset kan styrke læringsevne, motstandskraft og vilje til å ta utfordringer.'
+        ]
+      },
+      {
+        title: 'Om påstandene',
+        body: [
+          'Påstand 1, 2, 4, 6, 9, 10, 12 og 14 skåres 1–6 fra “Helt enig” til “Helt uenig”. Påstand 3, 5, 7, 8, 11, 13, 15 og 16 skåres omvendt, slik strukturen i boken beskriver.',
+          'Poengsummene mellom 24–48 heller mot fastlåst, 48–72 heller mot vekst, og ytterpunktene viser spekteret Dweck beskriver.'
+        ]
+      }
+    ]
+  },
+  pt: {
+    title: 'Sobre Carol S. Dweck e o teste de mindset',
+    intro:
+      'A psicóloga Carol S. Dweck apresentou os conceitos de mindset fixo e de crescimento no livro “Mindset: The New Psychology of Success”. As 16 afirmações aqui seguem a autoavaliação descrita por ela para entender como vemos inteligência e talento.',
+    sections: [
+      {
+        title: 'Fixo vs. crescimento',
+        body: [
+          'Um mindset fixo trata inteligência e talento como traços estáticos, enquanto um mindset de crescimento os vê como maleáveis por meio de esforço, feedback e estratégia.',
+          'A pesquisa de Dweck mostra que adotar um mindset de crescimento amplia a aprendizagem, a resiliência e a disposição para encarar desafios.'
+        ]
+      },
+      {
+        title: 'Sobre as afirmações',
+        body: [
+          'Os itens 1, 2, 4, 6, 9, 10, 12 e 14 são pontuados de 1 a 6 de “Concordo totalmente” a “Discordo totalmente”. Os itens 3, 5, 7, 8, 11, 13, 15 e 16 são pontuados de forma invertida, seguindo a estrutura do livro.',
+          'Pontuações entre 24–48 indicam tendência a mindset fixo, 48–72 indicam inclinação ao mindset de crescimento, e os extremos ilustram o espectro descrito por Dweck.'
+        ]
+      }
+    ]
+  }
+};
+
 export const dictionary: Record<Locale, Dictionary> = {
   en: {
     meta: meta.en,
+    navigation: navigation.en,
     landing: landing.en,
     quiz: {
       ...quizCopy.en,
       questions: baseQuestions.map((q) => ({ ...q, prompt: questionPrompts.en[q.id] })),
       likertOptions: likertOptions.en
     },
-    results: resultCopy.en
+    results: resultCopy.en,
+    about: aboutPage.en,
+    privacy: privacyPage.en,
+    testInfo: testInfoPage.en
   },
   no: {
     meta: meta.no,
+    navigation: navigation.no,
     landing: landing.no,
     quiz: {
       ...quizCopy.no,
       questions: baseQuestions.map((q) => ({ ...q, prompt: questionPrompts.no[q.id] })),
       likertOptions: likertOptions.no
     },
-    results: resultCopy.no
+    results: resultCopy.no,
+    about: aboutPage.no,
+    privacy: privacyPage.no,
+    testInfo: testInfoPage.no
   },
   pt: {
     meta: meta.pt,
+    navigation: navigation.pt,
     landing: landing.pt,
     quiz: {
       ...quizCopy.pt,
       questions: baseQuestions.map((q) => ({ ...q, prompt: questionPrompts.pt[q.id] })),
       likertOptions: likertOptions.pt
     },
-    results: resultCopy.pt
+    results: resultCopy.pt,
+    about: aboutPage.pt,
+    privacy: privacyPage.pt,
+    testInfo: testInfoPage.pt
   }
 };
 

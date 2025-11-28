@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   computeScore,
@@ -14,25 +14,57 @@ export default function QuizPage({ params }: { params: { locale: Locale } }) {
   const dict = getDictionary(params.locale);
   const questions = getQuizQuestions(params.locale);
   const [answers, setAnswers] = useState<Record<string, number>>({});
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAdvancing, setIsAdvancing] = useState(false);
   const router = useRouter();
 
   const answered = Object.keys(answers).length;
   const progress = Math.round((answered / questions.length) * 100);
   const allAnswered = answered === questions.length;
 
-  const { total } = useMemo(() => computeScore(answers), [answers]);
+  const currentQuestion = questions[currentIndex];
+  const currentValue = answers[currentQuestion?.id];
 
   function handleChange(questionId: string, value: number) {
-    setAnswers((prev) => ({ ...prev, [questionId]: value }));
+    setIsAdvancing(true);
+    setAnswers((prev) => {
+      const nextAnswers = { ...prev, [questionId]: value };
+      const isLast = currentIndex === questions.length - 1;
+      const nextIndex = Math.min(currentIndex + 1, questions.length - 1);
+
+      setTimeout(() => {
+        if (!isLast) {
+          setCurrentIndex(nextIndex);
+        } else {
+          handleSubmit(nextAnswers);
+        }
+        setIsAdvancing(false);
+      }, 220);
+
+      return nextAnswers;
+    });
   }
 
   function handleReset() {
     setAnswers({});
+    setCurrentIndex(0);
+    setIsAdvancing(false);
   }
 
-  function handleSubmit() {
-    if (!allAnswered) return;
-    router.push(`/${params.locale}/result?score=${total}`);
+  function handleSubmit(nextAnswers?: Record<string, number>) {
+    const payload = nextAnswers ?? answers;
+    if (Object.keys(payload).length !== questions.length) return;
+    const { total: computedTotal } = computeScore(payload);
+    router.push(`/${params.locale}/result?score=${computedTotal}`);
+  }
+
+  function handlePrevious() {
+    setCurrentIndex((prev) => Math.max(0, prev - 1));
+  }
+
+  function handleNext() {
+    if (!currentValue) return;
+    setCurrentIndex((prev) => Math.min(prev + 1, questions.length - 1));
   }
 
   return (
@@ -60,45 +92,60 @@ export default function QuizPage({ params }: { params: { locale: Locale } }) {
 
       <section className="card quiz__form">
         <form onSubmit={(e) => e.preventDefault()}>
-          {questions.map((question) => (
-            <fieldset key={question.id} className="question">
-              <legend>
-                <span className="pill">{question.number.toString().padStart(2, '0')}</span>
-                <span>{question.prompt}</span>
-              </legend>
-              <div className="likert" role="radiogroup" aria-label={dict.quiz.likertLabel}>
-                {dict.quiz.likertOptions.map((option) => (
-                  <label key={`${question.id}-${option.value}`}>
-                    <input
-                      type="radio"
-                      name={question.id}
-                      value={option.value}
-                      checked={answers[question.id] === option.value}
-                      onChange={() => handleChange(question.id, option.value)}
-                    />
-                    <span className="likert__dot" />
-                    <span className="likert__label">{option.label}</span>
-                  </label>
-                ))}
-              </div>
-            </fieldset>
-          ))}
+          <fieldset key={currentQuestion.id} className={`question question--single ${isAdvancing ? 'is-advancing' : ''}`}>
+            <legend>
+              <span className="pill">{currentQuestion.number.toString().padStart(2, '0')}</span>
+              <span>{currentQuestion.prompt}</span>
+            </legend>
+            <div className="likert" role="radiogroup" aria-label={dict.quiz.likertLabel}>
+              {dict.quiz.likertOptions.map((option) => (
+                <label key={`${currentQuestion.id}-${option.value}`}>
+                  <input
+                    type="radio"
+                    name={currentQuestion.id}
+                    value={option.value}
+                    checked={answers[currentQuestion.id] === option.value}
+                    onChange={() => handleChange(currentQuestion.id, option.value)}
+                  />
+                  <span className="likert__dot" />
+                  <span className="likert__label">{option.label}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
         </form>
 
-        {!allAnswered && <p className="hint">{dict.quiz.completionHint}</p>}
-
-        <div className="quiz__actions">
-          <button
-            type="button"
-            className="button button--primary"
-            onClick={handleSubmit}
-            disabled={!allAnswered}
-          >
-            {dict.quiz.cta}
-          </button>
-          <button type="button" className="button button--ghost" onClick={handleReset}>
-            {dict.quiz.secondaryCta}
-          </button>
+        <div className="quiz__actions quiz__actions--inline">
+          <div className="quiz__nav">
+            <button type="button" className="button button--ghost" onClick={handlePrevious} disabled={currentIndex === 0}>
+              {dict.quiz.previous}
+            </button>
+            <button
+              type="button"
+              className="button button--ghost"
+              onClick={handleNext}
+              disabled={!currentValue || currentIndex === questions.length - 1}
+            >
+              {dict.quiz.next}
+            </button>
+          </div>
+          <div className="quiz__cta-group">
+            {!allAnswered && <p className="hint">{dict.quiz.completionHint}</p>}
+            {isAdvancing && <p className="hint" aria-live="polite">{dict.quiz.autoAdvance}</p>}
+            <div className="quiz__actions">
+              <button
+                type="button"
+                className="button button--primary"
+                onClick={() => handleSubmit()}
+                disabled={!allAnswered}
+              >
+                {dict.quiz.cta}
+              </button>
+              <button type="button" className="button button--ghost" onClick={handleReset}>
+                {dict.quiz.secondaryCta}
+              </button>
+            </div>
+          </div>
         </div>
       </section>
     </main>
