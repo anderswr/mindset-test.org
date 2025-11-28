@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import '../globals.css';
 import { getDictionary, locales, type Locale } from '../../lib/dictionary';
 
 export async function generateStaticParams() {
@@ -19,17 +18,10 @@ export async function generateMetadata({ params }: { params: { locale: Locale } 
 }
 
 export default function LocaleLayout({
-  children,
-  params
+  children
 }: {
   children: React.ReactNode;
   params: { locale: Locale };
 }) {
-  return (
-    <html lang={params.locale}>
-      <body>
-        {children}
-      </body>
-    </html>
-  );
+  return children;
 }
