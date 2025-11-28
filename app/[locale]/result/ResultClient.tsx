@@ -60,41 +60,6 @@ export default function ResultClient({ locale }: { locale: Locale }) {
             <p className="hint">{bucket.advice}</p>
           </div>
         </div>
-
-        <div className="share">
-          <div className="share__header">
-            <div>
-              <p className="eyebrow">{dict.results.shareHeading}</p>
-              <p className="lead">{dict.results.shareCopy}</p>
-            </div>
-            <button
-              type="button"
-              className="button button--ghost"
-              onClick={() => {
-                if (navigator.share) {
-                  navigator.share({ title: bucket.title, url: shareUrl });
-                } else if (navigator.clipboard && shareUrl) {
-                  navigator.clipboard.writeText(shareUrl);
-                }
-              }}
-            >
-              {dict.results.shareAction}
-            </button>
-          </div>
-          <div className="share__links">
-            {dict.results.shareNetworks.map((network) => (
-              <a
-                key={network.id}
-                className="button button--primary"
-                href={shareLinks[network.id]}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {network.label}
-              </a>
-            ))}
-          </div>
-        </div>
       </section>
 
       {insight && (
@@ -106,6 +71,41 @@ export default function ResultClient({ locale }: { locale: Locale }) {
           <p className="hint">{insight.source}</p>
         </section>
       )}
+
+      <section className="card share">
+        <div className="share__header">
+          <div>
+            <p className="eyebrow">{dict.results.shareHeading}</p>
+            <p className="lead">{dict.results.shareCopy}</p>
+          </div>
+          <button
+            type="button"
+            className="button button--ghost"
+            onClick={() => {
+              if (navigator.share) {
+                navigator.share({ title: bucket.title, url: shareUrl });
+              } else if (navigator.clipboard && shareUrl) {
+                navigator.clipboard.writeText(shareUrl);
+              }
+            }}
+          >
+            {dict.results.shareAction}
+          </button>
+        </div>
+        <div className="share__links">
+          {dict.results.shareNetworks.map((network) => (
+            <a
+              key={network.id}
+              className="button button--primary"
+              href={shareLinks[network.id]}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {network.label}
+            </a>
+          ))}
+        </div>
+      </section>
     </main>
   );
 }

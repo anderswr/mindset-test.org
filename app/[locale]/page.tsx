@@ -17,7 +17,7 @@ export default async function Page({
         <h1>{dict.landing.title}</h1>
         <p className="lead">{dict.landing.lead}</p>
         <div className="hero__actions">
-          <Link href={`/${locale}/quiz`} className="button button--primary">
+          <Link href={`/${locale}/quiz?reset=1`} className="button button--primary">
             {dict.landing.cta}
           </Link>
           <a className="button button--ghost" href="#metodologia">
@@ -47,7 +47,7 @@ export default async function Page({
           ))}
         </div>
         <div className="methodology__cta">
-          <Link href={`/${locale}/quiz`} className="button button--primary">
+          <Link href={`/${locale}/quiz?reset=1`} className="button button--primary">
             {dict.landing.methodologyCta}
           </Link>
         </div>

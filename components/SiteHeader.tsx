@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { languageMeta, locales, type Dictionary, type Locale } from '../lib/dictionary';
@@ -17,17 +17,19 @@ type Props = {
   copy: HeaderCopy;
 };
 
-function replaceLocale(pathname: string, next: Locale) {
+function replaceLocale(pathname: string, search: string, next: Locale) {
   if (!pathname) return `/${next}`;
   const segments = pathname.split('/');
   segments[1] = next;
   const target = segments.join('/') || `/${next}`;
-  return target.replace(/\/+$/, '') || `/${next}`;
+  const cleaned = target.replace(/\/+$/, '') || `/${next}`;
+  return search ? `${cleaned}?${search}` : cleaned;
 }
 
 export default function SiteHeader({ locale, copy }: Props) {
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -61,7 +63,7 @@ export default function SiteHeader({ locale, copy }: Props) {
 
   function onLocaleChange(nextLocale: Locale) {
     if (!pathname) return;
-    const target = replaceLocale(pathname, nextLocale);
+    const target = replaceLocale(pathname, searchParams.toString(), nextLocale);
     setOpen(false);
     router.push(target);
   }

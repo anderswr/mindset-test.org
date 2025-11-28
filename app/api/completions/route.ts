@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 
 const COUNT_API_URL = 'https://api.countapi.xyz';
+const COUNT_API_FALLBACK_URL = 'https://api.counterapi.dev/v1';
 const globalState = globalThis as typeof globalThis & { __completionCount?: number };
 
 function fallbackCount(next?: number) {
@@ -22,9 +23,22 @@ async function fetchCount(method: 'get' | 'hit') {
   try {
     const endpoint = `${COUNT_API_URL}/${method}/${namespace}/${key}`;
     const res = await fetch(endpoint, { signal: controller.signal, cache: 'no-store' });
-    if (!res.ok) throw new Error('count api error');
-    const data = (await res.json()) as { value?: number };
-    if (typeof data.value === 'number') return data.value;
+    if (res.ok) {
+      const data = (await res.json()) as { value?: number };
+      if (typeof data.value === 'number') return data.value;
+    }
+  } catch {}
+
+  try {
+    const altEndpoint =
+      method === 'get'
+        ? `${COUNT_API_FALLBACK_URL}/${namespace}/${key}`
+        : `${COUNT_API_FALLBACK_URL}/${namespace}/${key}/up`;
+    const altRes = await fetch(altEndpoint, { signal: controller.signal, cache: 'no-store' });
+    if (altRes.ok) {
+      const data = (await altRes.json()) as { count?: number };
+      if (typeof data.count === 'number') return data.count;
+    }
   } finally {
     clearTimeout(timeout);
   }

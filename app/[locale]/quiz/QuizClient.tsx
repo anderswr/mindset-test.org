@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import {
@@ -22,10 +22,22 @@ export default function QuizClient({ locale }: QuizClientProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAdvancing, setIsAdvancing] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const storageKey = 'mindset-quiz-progress';
 
   useEffect(() => {
+    if (searchParams.get('reset') === '1') {
+      setAnswers({});
+      setCurrentIndex(0);
+      setIsAdvancing(false);
+      try {
+        sessionStorage.removeItem(storageKey);
+      } catch {}
+      router.replace(`/${locale}/quiz`);
+      return;
+    }
+
     try {
       const stored = sessionStorage.getItem(storageKey);
       if (!stored) return;
@@ -35,7 +47,7 @@ export default function QuizClient({ locale }: QuizClientProps) {
         setCurrentIndex(Math.min(parsed.currentIndex, questions.length - 1));
       }
     } catch {}
-  }, [storageKey, questions.length]);
+  }, [locale, questions.length, router, searchParams, storageKey]);
 
   useEffect(() => {
     try {
@@ -70,13 +82,16 @@ export default function QuizClient({ locale }: QuizClientProps) {
     });
   }
 
-  function handleReset() {
+  function handleReset(skipNav?: boolean) {
     setAnswers({});
     setCurrentIndex(0);
     setIsAdvancing(false);
     try {
       sessionStorage.removeItem(storageKey);
     } catch {}
+    if (!skipNav) {
+      router.push(`/${locale}/quiz`);
+    }
   }
 
   function handleSubmit(nextAnswers?: Record<string, number>) {
@@ -161,7 +176,7 @@ export default function QuizClient({ locale }: QuizClientProps) {
             {!allAnswered && <p className="hint">{dict.quiz.completionHint}</p>}
             {isAdvancing && <p className="hint" aria-live="polite">{dict.quiz.autoAdvance}</p>}
             <div className="quiz__actions">
-              <button type="button" className="button button--ghost" onClick={handleReset}>
+              <button type="button" className="button button--ghost" onClick={() => handleReset()}>
                 {dict.quiz.secondaryCta}
               </button>
               {allAnswered && (

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import type { ReactNode } from 'react';
+import { Suspense, type ReactNode } from 'react';
 
 import SiteFooter from '../../components/SiteFooter';
 import SiteHeader from '../../components/SiteHeader';
@@ -38,15 +38,17 @@ export default async function LocaleLayout({
 
   return (
     <div className="app-shell">
-      <SiteHeader
-        locale={locale}
-        copy={{
-          title: dict.meta.title,
-          navigation: dict.navigation,
-          languageLabel: dict.landing.languageLabel
-        }}
-      />
-      <div className="page-body">{children}</div>
+      <Suspense>
+        <SiteHeader
+          locale={locale}
+          copy={{
+            title: dict.meta.title,
+            navigation: dict.navigation,
+            languageLabel: dict.landing.languageLabel
+          }}
+        />
+      </Suspense>
+      <main className="page-body">{children}</main>
       <SiteFooter locale={locale} footer={dict.footer} />
     </div>
   );

@@ -418,7 +418,7 @@ const landing: Record<Locale, Dictionary['landing']> = {
       'De 16 påstandene er hentet fra materialet i boken “Mindset” av Carol S. Dweck. For hver påstand velger du graden av enighet på en Likert-skala med seks trinn.',
       'Noen spørsmål er omvendt skåret; beregningen skjer automatisk. Når du er ferdig, får du et tydelig resultat i tråd med tolkningsintervallene fra kilden.'
     ],
-    methodologyCta: 'Begynn nå',
+    methodologyCta: 'Start testen',
     languageLabel: 'Språk',
     takerCountLabel: '{count} har tatt testen'
   },
@@ -440,7 +440,7 @@ const landing: Record<Locale, Dictionary['landing']> = {
       'As 16 afirmações abaixo foram extraídas do material apresentado no livro “Mindset”, de Carol S. Dweck. Para cada uma, escolha seu nível de concordância em uma escala Likert de seis pontos.',
       'Algumas perguntas são pontuadas de forma invertida, e todo o cálculo é aplicado automaticamente para você. Ao concluir, você recebe um resultado alinhado às faixas originais.'
     ],
-    methodologyCta: 'Iniciar agora',
+    methodologyCta: 'Começar agora',
     languageLabel: 'Idioma',
     takerCountLabel: '{count} pessoas já concluíram o teste'
   }
