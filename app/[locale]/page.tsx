@@ -1,6 +1,22 @@
 import Link from 'next/link';
+import { headers } from 'next/headers';
 import { getDictionary, type Locale } from '../../lib/dictionary';
 import TakerCounter from '../../components/TakerCounter';
+
+async function fetchInitialCount() {
+  try {
+    const headerStore = headers();
+    const host = headerStore.get('x-forwarded-host') ?? headerStore.get('host');
+    if (!host) return undefined;
+    const proto = headerStore.get('x-forwarded-proto') ?? 'https';
+    const res = await fetch(`${proto}://${host}/api/completions`, { cache: 'no-store' });
+    if (!res.ok) return undefined;
+    const data = (await res.json()) as { count?: number };
+    return typeof data.count === 'number' ? data.count : undefined;
+  } catch {
+    return undefined;
+  }
+}
 
 export default async function Page({
   params
@@ -9,31 +25,29 @@ export default async function Page({
 }) {
   const { locale } = await params;
   const dict = getDictionary(locale);
+  const initialCount = await fetchInitialCount();
 
   return (
     <main>
       <header className="hero">
         <div className="hero__eyebrow">{dict.landing.eyebrow}</div>
         <h1>{dict.landing.title}</h1>
-        <p className="lead">{dict.landing.lead}</p>
         <div className="hero__actions hero__actions--center">
           <Link href={`/${locale}/quiz?reset=1`} className="button button--primary">
             {dict.landing.cta}
           </Link>
         </div>
         <p className="pill pill--muted hero__count">
-          <TakerCounter locale={locale} formatLabel={dict.landing.takerCountLabel} />
+          <TakerCounter
+            locale={locale}
+            formatLabel={dict.landing.takerCountLabel}
+            initialCount={initialCount}
+          />
         </p>
       </header>
 
       <section className="card highlights">
-        <div className="highlights__list">
-          {dict.landing.highlights.map((item) => (
-            <div key={item} className="pill">
-              {item}
-            </div>
-          ))}
-        </div>
+        <p className="lead">{dict.landing.lead}</p>
       </section>
 
       <section id="metodologia" className="card methodology">
@@ -46,10 +60,6 @@ export default async function Page({
         <div className="methodology__cta" />
       </section>
 
-      <footer className="page-footer">
-        <span>✨</span>
-        <span>{dict.landing.footer}</span>
-      </footer>
     </main>
   );
 }

@@ -7,26 +7,28 @@ import { type Locale } from '../lib/dictionary';
 type Props = {
   locale: Locale;
   formatLabel: string;
+  initialCount?: number;
 };
 
-export default function TakerCounter({ locale, formatLabel }: Props) {
+export default function TakerCounter({ locale, formatLabel, initialCount }: Props) {
   const [count, setCount] = useState<number>(() => {
     try {
       const cached = localStorage.getItem('mindset-counter');
       if (cached) return Number(cached) || 0;
     } catch {}
+    if (typeof initialCount === 'number') return initialCount;
     return 0;
   });
 
   useEffect(() => {
     let isMounted = true;
-    setCount((prev) => prev || 0);
+    setCount((prev) => (prev ? prev : initialCount ?? 0));
     fetch('/api/completions', { cache: 'no-store' })
       .then((res) => res.json())
       .then((data) => {
         if (!isMounted) return;
         const next = typeof data.count === 'number' ? data.count : 0;
-        setCount(next);
+        setCount(next || initialCount || 0);
         try {
           localStorage.setItem('mindset-counter', String(next));
         } catch {}
@@ -38,7 +40,7 @@ export default function TakerCounter({ locale, formatLabel }: Props) {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [initialCount]);
 
   const formatter = new Intl.NumberFormat(locale === 'pt' ? 'pt-BR' : locale === 'no' ? 'nb-NO' : 'en-US');
   const formatted = formatter.format(count);

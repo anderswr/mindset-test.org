@@ -385,11 +385,7 @@ const landing: Record<Locale, Dictionary['landing']> = {
       'Based on the assessment from Carol S. Dweck’s book “Mindset”. In under five minutes you move through 16 statements, get your score, and a share-ready result.',
     cta: 'Start the test',
     secondaryCta: 'See how it works',
-    highlights: [
-      'Six-point Likert scale — same as the original instrument',
-      'Results page ready for social sharing',
-      'Copy and scoring aligned to the published ranges'
-    ],
+    highlights: [],
     footer: 'Inspired by sleep-test.org and adapted for the Mindset questionnaire.',
     methodologyTitle: 'How it works',
     methodologyBody: [
@@ -407,11 +403,7 @@ const landing: Record<Locale, Dictionary['landing']> = {
       'Basert på vurderingsverktøyet fra Carol S. Dwecks bok “Mindset”. På under fem minutter svarer du på 16 påstander og får et resultat klart til å deles.',
     cta: 'Start testen',
     secondaryCta: 'Se hvordan testen fungerer',
-    highlights: [
-      'Likert-skala med seks nivåer — lik originalen',
-      'Resultatside klar for deling i sosiale medier',
-      'Tekst og poenggrenser samsvarer med kildematerialet'
-    ],
+    highlights: [],
     footer: 'Inspirert av sleep-test.org og tilpasset Mindset-spørsmålene.',
     methodologyTitle: 'Slik fungerer det',
     methodologyBody: [
@@ -429,11 +421,7 @@ const landing: Record<Locale, Dictionary['landing']> = {
       'Baseado no instrumento apresentado no livro “Mindset”, de Carol S. Dweck. Em menos de cinco minutos você percorre 16 afirmações e recebe um resultado pronto para compartilhar.',
     cta: 'Começar agora',
     secondaryCta: 'Ver metodologia',
-    highlights: [
-      'Escala Likert de 6 pontos — igual ao modelo original',
-      'Resultado pronto para compartilhar em redes sociais',
-      'Cópia completa em português e pronta para uso'
-    ],
+    highlights: [],
     footer: 'Projeto inspirado em sleep-test.org, adaptado para o teste de Mindset.',
     methodologyTitle: 'Como funciona',
     methodologyBody: [

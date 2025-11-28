@@ -241,6 +241,7 @@ p {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.55rem 0.75rem;
   padding: 0.35rem 0 0.6rem;
+  width: 100%;
 }
 
 .likert label {
@@ -255,6 +256,8 @@ p {
   cursor: pointer;
   transition: border-color 0.2s ease, background 0.15s ease;
   white-space: normal;
+  max-width: 100%;
+  word-break: break-word;
 }
 
 .likert label:nth-child(n + 4) {
@@ -565,7 +568,7 @@ p {
 .page-body > main {
   width: 100%;
   max-width: 1024px;
-  padding: 1rem 1.5rem 0;
+  padding: 1rem 1.5rem 96px;
 }
 
 .hero__count {
@@ -624,13 +627,17 @@ p {
 }
 
 .site-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
   border-top: 1px solid var(--border);
   background: rgba(13, 16, 23, 0.95);
-  margin-top: 2rem;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   padding: 0 1.5rem;
   display: flex;
   justify-content: center;
+  z-index: 5;
 }
 
 .footer-inner {
