@@ -48,7 +48,8 @@ async function fetchCount(method: 'get' | 'hit') {
 }
 
 export async function GET() {
-  const cookieCount = Number(cookies().get('mindset-count')?.value ?? 0) || 0;
+  const cookieStore = await cookies();
+  const cookieCount = Number(cookieStore.get('mindset-count')?.value ?? 0) || 0;
   const value = await fetchCount('get');
   const count = fallbackCount(typeof value === 'number' ? value : undefined, cookieCount);
   const res = NextResponse.json({ count });
@@ -57,7 +58,8 @@ export async function GET() {
 }
 
 export async function POST() {
-  const cookieCount = Number(cookies().get('mindset-count')?.value ?? 0) || 0;
+  const cookieStore = await cookies();
+  const cookieCount = Number(cookieStore.get('mindset-count')?.value ?? 0) || 0;
   const value = await fetchCount('hit');
   const nextValue = typeof value === 'number' ? value : cookieCount + 1;
   const count = fallbackCount(nextValue, cookieCount + 1);

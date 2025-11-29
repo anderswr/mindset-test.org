@@ -5,7 +5,7 @@ import TakerCounter from '../../components/TakerCounter';
 
 async function fetchInitialCount() {
   try {
-    const headerStore = headers();
+    const headerStore = await headers();
     const host = headerStore.get('x-forwarded-host') ?? headerStore.get('host');
     if (!host) return undefined;
     const proto = headerStore.get('x-forwarded-proto') ?? 'https';
