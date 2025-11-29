@@ -1,32 +1,15 @@
-import { getDictionary, type Locale } from '../../../lib/dictionary';
+import { redirect } from 'next/navigation';
+import { locales, type Locale } from '../../../lib/dictionary';
 
-export default async function PrivacyPage({
-  params
+export default async function PrivacyRedirect({
+  params,
 }: {
   params: Promise<{ locale: Locale }>;
 }) {
   const { locale } = await params;
-  const dict = getDictionary(locale);
-  const page = dict.privacy;
+  redirect(`/${locale}/about`);
+}
 
-  return (
-    <main className="static-page">
-      <header className="static-page__header">
-        <p className="eyebrow">{dict.landing.eyebrow}</p>
-        <h1>{page.title}</h1>
-        <p className="lead">{page.intro}</p>
-      </header>
-
-      <section className="card static-page__body">
-        {page.sections.map((section) => (
-          <div key={section.title} className="static-section">
-            <h2>{section.title}</h2>
-            {section.body.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
-          </div>
-        ))}
-      </section>
-    </main>
-  );
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
 }

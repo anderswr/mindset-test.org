@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { incrementCompletionCount } from '../../../lib/completionCounter';
 import { getDictionary, getResultBucket, type Locale } from '../../../lib/dictionary';
 
 function buildShareUrl(path: string, text: string) {
@@ -24,6 +25,18 @@ export default function ResultClient({ locale }: { locale: Locale }) {
   const bucket = useMemo(() => getResultBucket(score, locale), [score, locale]);
   const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
   const shareLinks = buildShareUrl(shareUrl, bucket.title);
+  const insight = useMemo(
+    () => dict.results.insights.items.find((item) => item.id === bucket.id),
+    [bucket.id, dict.results.insights.items]
+  );
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const key = `mindset-counted-${score}`;
+    if (sessionStorage.getItem(key)) return;
+    sessionStorage.setItem(key, '1');
+    incrementCompletionCount();
+  }, [score]);
 
   return (
     <main className="result-page">
@@ -33,9 +46,6 @@ export default function ResultClient({ locale }: { locale: Locale }) {
           <h1>{dict.results.title}</h1>
           <p className="lead">{dict.results.learnMore}</p>
         </div>
-        <Link href={`/${locale}/quiz`} className="button button--ghost">
-          {dict.results.retake}
-        </Link>
       </header>
 
       <section className="card result-card">
@@ -51,48 +61,52 @@ export default function ResultClient({ locale }: { locale: Locale }) {
             <p className="hint">{bucket.advice}</p>
           </div>
         </div>
-
-        <div className="share">
-          <div className="share__header">
-            <div>
-              <p className="eyebrow">{dict.results.shareHeading}</p>
-              <p className="lead">{dict.results.shareCopy}</p>
-            </div>
-            <button
-              type="button"
-              className="button button--ghost"
-              onClick={() => {
-                if (navigator.share) {
-                  navigator.share({ title: bucket.title, url: shareUrl });
-                } else if (navigator.clipboard && shareUrl) {
-                  navigator.clipboard.writeText(shareUrl);
-                }
-              }}
-            >
-              {dict.results.shareAction}
-            </button>
-          </div>
-          <div className="share__links">
-            {dict.results.shareNetworks.map((network) => (
-              <a
-                key={network.id}
-                className="button button--primary"
-                href={shareLinks[network.id]}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {network.label}
-              </a>
-            ))}
-          </div>
-        </div>
       </section>
 
-      <footer className="page-footer">
-        <Link href={`/${locale}/quiz`} className="button button--ghost">
-          {dict.results.restart}
-        </Link>
-      </footer>
+      {insight && (
+        <section className="card result-insight">
+          <p className="eyebrow">{dict.results.insights.title}</p>
+          <h2>{insight.title}</h2>
+          <p>{dict.results.insights.intro}</p>
+          <p>{insight.body}</p>
+          <p className="hint">{insight.source}</p>
+        </section>
+      )}
+
+      <section className="card share">
+        <div className="share__header">
+          <div>
+            <p className="eyebrow">{dict.results.shareHeading}</p>
+            <p className="lead">{dict.results.shareCopy}</p>
+          </div>
+          <button
+            type="button"
+            className="button button--ghost"
+            onClick={() => {
+              if (navigator.share) {
+                navigator.share({ title: bucket.title, url: shareUrl });
+              } else if (navigator.clipboard && shareUrl) {
+                navigator.clipboard.writeText(shareUrl);
+              }
+            }}
+          >
+            {dict.results.shareAction}
+          </button>
+        </div>
+        <div className="share__links">
+          {dict.results.shareNetworks.map((network) => (
+            <a
+              key={network.id}
+              className="button button--primary"
+              href={shareLinks[network.id]}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {network.label}
+            </a>
+          ))}
+        </div>
+      </section>
     </main>
   );
 }

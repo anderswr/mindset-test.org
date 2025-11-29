@@ -28,6 +28,13 @@ type ResultBucket = {
   advice: string;
 };
 
+type ResultInsight = {
+  id: ResultBucket['id'];
+  title: string;
+  body: string;
+  source: string;
+};
+
 type StaticSection = {
   title: string;
   body: string[];
@@ -40,11 +47,14 @@ type StaticPage = {
 };
 
 type Navigation = {
-  home: string;
   quiz: string;
   about: string;
-  privacy: string;
   testInfo: string;
+};
+
+type FooterCopy = {
+  copyright: string;
+  aboutLink: string;
 };
 
 type ShareNetwork = {
@@ -70,7 +80,7 @@ export type Dictionary = {
     methodologyBody: string[];
     methodologyCta: string;
     languageLabel: string;
-    takerCountLabel: (count: string) => string;
+    takerCountLabel: string;
   };
   quiz: {
     title: string;
@@ -100,10 +110,15 @@ export type Dictionary = {
     learnMore: string;
     restart: string;
     retake: string;
+    insights: {
+      title: string;
+      intro: string;
+      items: ResultInsight[];
+    };
   };
   about: StaticPage;
-  privacy: StaticPage;
   testInfo: StaticPage;
+  footer: FooterCopy;
 };
 
 const baseQuestions: Array<Pick<Question, 'id' | 'number' | 'orientation'>> = [
@@ -127,39 +142,39 @@ const baseQuestions: Array<Pick<Question, 'id' | 'number' | 'orientation'>> = [
 
 const questionPrompts: Record<Locale, Record<string, string>> = {
   en: {
-    'inteligencia-1': 'You have a certain level of intelligence, and there is really no way to change it.',
-    'inteligencia-2': 'Your intelligence is an innate trait that cannot be altered.',
+    'inteligencia-1': "You have a level of intelligence, and you really have no way to change it.",
+    'inteligencia-2': 'Your intelligence is an innate characteristic that cannot be changed.',
     'inteligencia-3': 'No matter who you are, you can significantly change your level of intelligence.',
-    'inteligencia-4': 'Honestly, you cannot change your intelligence.',
-    'inteligencia-5': 'You can always substantially change your level of intelligence.',
-    'inteligencia-6': 'You may learn new things, but you cannot change your basic level of intelligence.',
-    'inteligencia-7': 'No matter how intelligent you are, you can always change your level of intelligence quite a bit.',
+    'inteligencia-4': "Honestly, you can't change your intelligence.",
+    'inteligencia-5': 'You can always substantially change your intelligence level.',
+    'inteligencia-6': "You can learn new things, but you can't change your basic level of intelligence.",
+    'inteligencia-7': 'No matter how smart you are, you can always change your intelligence level a lot.',
     'inteligencia-8': 'You can change your basic level of intelligence considerably.',
-    'talento-9': 'You have a certain level of talent, and there is no way to change it.',
-    'talento-10': 'Talent in any area is something that cannot be altered.',
-    'talento-11': 'No matter who you are, it is always possible to change your level of talent.',
-    'talento-12': 'Honestly, you cannot change your talent.',
-    'talento-13': 'You can always substantially change the talent you have.',
-    'talento-14': 'You can learn new things, but you really cannot change your basic level of talent.',
-    'talento-15': 'Regardless of the talent you have, you can always change it substantially.',
+    'talento-9': "You have a certain level of talent, and there's no way to change that.",
+    'talento-10': 'Talent for some area is something that cannot be changed.',
+    'talento-11': 'No matter who you are, it is always possible to change the level of talent.',
+    'talento-12': "Honestly, you can't change your talent.",
+    'talento-13': 'You can always substantially alter the talent you have.',
+    'talento-14': "You can learn new things, but you really can't change your basic level of talent.",
+    'talento-15': 'Regardless of the talent you possess, you can always change it substantially.',
     'talento-16': 'You can even change your basic level of talent considerably.'
   },
   no: {
-    'inteligencia-1': 'Du har et visst nivå av intelligens, og det er egentlig ingen måte å endre det på.',
-    'inteligencia-2': 'Intelligensen din er en iboende egenskap som ikke kan endres.',
+    'inteligencia-1': 'Du har et nivå av intelligens, og det finnes egentlig ingen måte å endre det på.',
+    'inteligencia-2': 'Intelligensen din er en medfødt egenskap som ikke kan endres.',
     'inteligencia-3': 'Uansett hvem du er, kan du endre intelligensnivået ditt betydelig.',
     'inteligencia-4': 'Helt ærlig kan du ikke endre intelligensen din.',
     'inteligencia-5': 'Du kan alltid endre intelligensnivået ditt betydelig.',
     'inteligencia-6': 'Du kan lære nye ting, men du kan ikke endre ditt grunnleggende intelligensnivå.',
-    'inteligencia-7': 'Uansett hvor intelligent du er, kan du alltid endre intelligensnivået ganske mye.',
+    'inteligencia-7': 'Uansett hvor smart du er, kan du alltid endre intelligensnivået mye.',
     'inteligencia-8': 'Du kan endre ditt grunnleggende intelligensnivå betraktelig.',
     'talento-9': 'Du har et visst nivå av talent, og det finnes ingen måte å endre det på.',
-    'talento-10': 'Talent innen et område er noe som ikke kan endres.',
-    'talento-11': 'Uansett hvem du er, er det alltid mulig å endre talentnivået ditt.',
+    'talento-10': 'Talent for et område er noe som ikke kan endres.',
+    'talento-11': 'Uansett hvem du er, er det alltid mulig å endre talentnivået.',
     'talento-12': 'Helt ærlig kan du ikke endre talentet ditt.',
     'talento-13': 'Du kan alltid endre talentet du har betydelig.',
-    'talento-14': 'Du kan lære nye ting, men du kan ikke virkelig endre ditt grunnleggende talentnivå.',
-    'talento-15': 'Uavhengig av talentet du har, kan du alltid endre det betydelig.',
+    'talento-14': 'Du kan lære nye ting, men du kan egentlig ikke endre ditt grunnleggende talentnivå.',
+    'talento-15': 'Uansett hvilket talent du har, kan du alltid endre det betydelig.',
     'talento-16': 'Du kan til og med endre ditt grunnleggende talentnivå betraktelig.'
   },
   pt: {
@@ -184,24 +199,18 @@ const questionPrompts: Record<Locale, Record<string, string>> = {
 
 const navigation: Record<Locale, Navigation> = {
   en: {
-    home: 'Home',
-    quiz: 'Take the test',
+    quiz: 'To the test',
     about: 'About',
-    privacy: 'Privacy',
     testInfo: 'About the book'
   },
   no: {
-    home: 'Forside',
-    quiz: 'Start testen',
+    quiz: 'Til testen',
     about: 'Om',
-    privacy: 'Personvern',
     testInfo: 'Om boken'
   },
   pt: {
-    home: 'Início',
-    quiz: 'Fazer o teste',
+    quiz: 'Ir para o teste',
     about: 'Sobre',
-    privacy: 'Privacidade',
     testInfo: 'Sobre o livro'
   }
 };
@@ -376,11 +385,7 @@ const landing: Record<Locale, Dictionary['landing']> = {
       'Based on the assessment from Carol S. Dweck’s book “Mindset”. In under five minutes you move through 16 statements, get your score, and a share-ready result.',
     cta: 'Start the test',
     secondaryCta: 'See how it works',
-    highlights: [
-      'Six-point Likert scale — same as the original instrument',
-      'Results page ready for social sharing',
-      'Copy and scoring aligned to the published ranges'
-    ],
+    highlights: [],
     footer: 'Inspired by sleep-test.org and adapted for the Mindset questionnaire.',
     methodologyTitle: 'How it works',
     methodologyBody: [
@@ -389,7 +394,7 @@ const landing: Record<Locale, Dictionary['landing']> = {
     ],
     methodologyCta: 'Begin now',
     languageLabel: 'Language',
-    takerCountLabel: (count) => `${count} people have completed the test`
+    takerCountLabel: '{count} people have completed the test'
   },
   no: {
     eyebrow: 'Test for fastlåst vs. vekstmindset',
@@ -398,20 +403,16 @@ const landing: Record<Locale, Dictionary['landing']> = {
       'Basert på vurderingsverktøyet fra Carol S. Dwecks bok “Mindset”. På under fem minutter svarer du på 16 påstander og får et resultat klart til å deles.',
     cta: 'Start testen',
     secondaryCta: 'Se hvordan testen fungerer',
-    highlights: [
-      'Likert-skala med seks nivåer — lik originalen',
-      'Resultatside klar for deling i sosiale medier',
-      'Tekst og poenggrenser samsvarer med kildematerialet'
-    ],
+    highlights: [],
     footer: 'Inspirert av sleep-test.org og tilpasset Mindset-spørsmålene.',
     methodologyTitle: 'Slik fungerer det',
     methodologyBody: [
       'De 16 påstandene er hentet fra materialet i boken “Mindset” av Carol S. Dweck. For hver påstand velger du graden av enighet på en Likert-skala med seks trinn.',
       'Noen spørsmål er omvendt skåret; beregningen skjer automatisk. Når du er ferdig, får du et tydelig resultat i tråd med tolkningsintervallene fra kilden.'
     ],
-    methodologyCta: 'Begynn nå',
+    methodologyCta: 'Start testen',
     languageLabel: 'Språk',
-    takerCountLabel: (count) => `${count} har tatt testen`
+    takerCountLabel: '{count} har tatt testen'
   },
   pt: {
     eyebrow: 'Teste Mindset Fixo x Crescimento',
@@ -420,20 +421,16 @@ const landing: Record<Locale, Dictionary['landing']> = {
       'Baseado no instrumento apresentado no livro “Mindset”, de Carol S. Dweck. Em menos de cinco minutos você percorre 16 afirmações e recebe um resultado pronto para compartilhar.',
     cta: 'Começar agora',
     secondaryCta: 'Ver metodologia',
-    highlights: [
-      'Escala Likert de 6 pontos — igual ao modelo original',
-      'Resultado pronto para compartilhar em redes sociais',
-      'Cópia completa em português e pronta para uso'
-    ],
+    highlights: [],
     footer: 'Projeto inspirado em sleep-test.org, adaptado para o teste de Mindset.',
     methodologyTitle: 'Como funciona',
     methodologyBody: [
       'As 16 afirmações abaixo foram extraídas do material apresentado no livro “Mindset”, de Carol S. Dweck. Para cada uma, escolha seu nível de concordância em uma escala Likert de seis pontos.',
       'Algumas perguntas são pontuadas de forma invertida, e todo o cálculo é aplicado automaticamente para você. Ao concluir, você recebe um resultado alinhado às faixas originais.'
     ],
-    methodologyCta: 'Iniciar agora',
+    methodologyCta: 'Começar agora',
     languageLabel: 'Idioma',
-    takerCountLabel: (count) => `${count} pessoas já concluíram o teste`
+    takerCountLabel: '{count} pessoas já concluíram o teste'
   }
 };
 
@@ -500,9 +497,44 @@ const resultCopy: Record<Locale, Dictionary['results']> = {
     ],
     buckets: resultBuckets.en,
     learnMore:
-      'Scores between 24 and 72 show that mindset can vary with the activity. Treat it as an invitation to question fixed beliefs and try gradual changes.',
+      'The sum of the statements guides your preference. Mindset is a continuum and can shift with each activity. Scores between 24 and 48 lean fixed, and 48 to 72 lean growth.',
     restart: 'Restart test',
-    retake: 'Retake answers'
+    retake: 'Retake answers',
+    insights: {
+      title: 'What your score can signal',
+      intro:
+        'These short notes blend Dweck’s mindset research with later studies on motivation. Use them as prompts for reflection, not as a diagnosis.',
+      items: [
+        {
+          id: 'fixed',
+          title: 'Fixed preference (24 or lower)',
+          body:
+            'You may prioritize proven strengths and consistency. Colleagues can experience you as reliable yet risk-averse. Try pairing outcomes with process goals and invite feedback on strategies to reduce the fear of “getting it wrong.”',
+          source: 'Based on Dweck (2006) and Burnette et al. (2013) meta-analyses of entity beliefs.'
+        },
+        {
+          id: 'fixedLean',
+          title: 'Fixed with flex (25–48)',
+          body:
+            'You can switch between protecting performance and experimenting. Others may see steadiness but also hesitation. Using if–then plans (implementation intentions) for practice time often helps convert hesitation into deliberate effort.',
+          source: 'See Dweck (2006) on mixed profiles and Gollwitzer & Sheeran (2006) on implementation intentions.'
+        },
+        {
+          id: 'growthLean',
+          title: 'Growth with guardrails (49–72)',
+          body:
+            'You typically embrace challenge but may default to “play it safe” when stakes feel high. Make effort visible (process praise) and keep mastery goals explicit so others read your drive as constructive, not relentless.',
+          source: 'Aligned with Dweck (2006) and mastery-goal framing effects summarized by Burnette et al. (2013).'
+        },
+        {
+          id: 'growth',
+          title: 'Growth preference (73 or higher)',
+          body:
+            'You likely persist through setbacks and radiate optimism. Peers may also need signals that you respect limits. Build in recovery time and invite challenge from others to avoid overextending your strengths.',
+          source: 'Draws on Dweck (2006) and research on resilience in growth-oriented climates (Yeager & Dweck, 2012).'
+        }
+      ]
+    }
   },
   no: {
     title: 'Resultater fra mindset-testen',
@@ -518,9 +550,44 @@ const resultCopy: Record<Locale, Dictionary['results']> = {
     ],
     buckets: resultBuckets.no,
     learnMore:
-      'Poeng mellom 24 og 72 viser at mindset kan variere med aktiviteten. Se det som en invitasjon til å utfordre faste antakelser og teste gradvise endringer.',
+      'Summen av påstandene er en veiledning til preferansen din. Mindset er et kontinuum og kan skifte med aktivitetene. Mellom 24 og 48 heller det mot fastlåst, og 48 til 72 heller mot vekst.',
     restart: 'Start testen på nytt',
-    retake: 'Gå tilbake til svarene'
+    retake: 'Gå tilbake til svarene',
+    insights: {
+      title: 'Hva poengsummen kan tyde på',
+      intro:
+        'Notatene kobler Dwecks mindset-forskning med nyere funn om motivasjon. Se dem som refleksjonshjelp, ikke en diagnose.',
+      items: [
+        {
+          id: 'fixed',
+          title: 'Fastlåst preferanse (24 eller lavere)',
+          body:
+            'Du vektlegger kanskje stabile styrker og forutsigbarhet. Andre kan oppleve deg som pålitelig, men forsiktig. Kombiner resultatmål med prosessmål og be om tilbakemeldinger på strategier for å dempe frykten for å “gjøre feil.”',
+          source: 'Bygger på Dweck (2006) og Burnette mfl. (2013) om effekten av entitetsoppfatninger.'
+        },
+        {
+          id: 'fixedLean',
+          title: 'Fast med litt fleks (25–48)',
+          body:
+            'Du kan veksle mellom å beskytte prestasjonen og å prøve noe nytt. Andre kan se deg som stødig, men nølende. If–then-planer (implementeringsintensjoner) for øvingstid hjelper ofte med å gjøre nøling om til målrettet innsats.',
+          source: 'Se Dweck (2006) om blandede profiler og Gollwitzer & Sheeran (2006) om implementeringsintensjoner.'
+        },
+        {
+          id: 'growthLean',
+          title: 'Vekst med rekkverk (49–72)',
+          body:
+            'Du omfavner vanligvis utfordringer, men kan falle tilbake på “sikkert” når innsatsen virker høy. Gjør innsats synlig (prosessros) og hold mestringsmål tydelige, slik at andre leser driven din som konstruktiv og ikke masete.',
+          source: 'I tråd med Dweck (2006) og mestringsorienteringseffekter oppsummert av Burnette mfl. (2013).'
+        },
+        {
+          id: 'growth',
+          title: 'Vekstpreferanse (73 eller høyere)',
+          body:
+            'Du står trolig i motgang og utstråler optimisme. Andre trenger også signaler om at du respekterer grenser. Legg inn pauser og inviter andres innspill for å unngå å strekke styrkene for langt.',
+          source: 'Henter fra Dweck (2006) og forskning på robusthet i vekstorienterte miljøer (Yeager & Dweck, 2012).'
+        }
+      ]
+    }
   },
   pt: {
     title: 'Resultados do Teste de Mindset',
@@ -538,15 +605,50 @@ const resultCopy: Record<Locale, Dictionary['results']> = {
     learnMore:
       'A faixa intermediária entre 24 e 72 pontos indica que o mindset pode variar conforme a atividade. Use isso como um convite para questionar crenças fixas e experimentar mudanças graduais.',
     restart: 'Refazer teste',
-    retake: 'Voltar às respostas'
+    retake: 'Voltar às respostas',
+    insights: {
+      title: 'O que sua pontuação sinaliza',
+      intro:
+        'Estes apontamentos unem a pesquisa de Dweck sobre mindset e estudos posteriores de motivação. Use-os como pistas de reflexão, não como diagnóstico.',
+      items: [
+        {
+          id: 'fixed',
+          title: 'Preferência fixa (24 ou menos)',
+          body:
+            'Você pode priorizar forças comprovadas e previsibilidade. As pessoas podem vê-lo como confiável, mas avesso a riscos. Combine metas de resultado com metas de processo e peça feedback sobre estratégias para reduzir o medo de “errar”.',
+          source: 'Com base em Dweck (2006) e nas meta-análises de Burnette et al. (2013) sobre crenças de entidade.'
+        },
+        {
+          id: 'fixedLean',
+          title: 'Fixo com alguma flexibilidade (25–48)',
+          body:
+            'Você alterna entre proteger a performance e experimentar. Outros podem perceber firmeza, mas também hesitação. Planos se–então (intenções de implementação) para momentos de prática ajudam a transformar hesitação em esforço deliberado.',
+          source: 'Veja Dweck (2006) sobre perfis mistos e Gollwitzer & Sheeran (2006) sobre intenções de implementação.'
+        },
+        {
+          id: 'growthLean',
+          title: 'Crescimento com corrimãos (49–72)',
+          body:
+            'Você costuma abraçar desafios, mas pode recorrer ao “seguro” quando o risco parece alto. Torne o esforço visível (elogio de processo) e mantenha metas de maestria explícitas para que sua disposição seja lida como construtiva, não insistente.',
+          source: 'Alinhado a Dweck (2006) e aos efeitos de metas de maestria resumidos por Burnette et al. (2013).'
+        },
+        {
+          id: 'growth',
+          title: 'Preferência por crescimento (73 ou mais)',
+          body:
+            'Você tende a persistir diante de obstáculos e transmite otimismo. Colegas também precisam ver que você respeita limites. Inclua pausas e convide desafios de outras pessoas para não extrapolar suas próprias forças.',
+          source: 'Baseado em Dweck (2006) e pesquisas sobre resiliência em contextos de crescimento (Yeager & Dweck, 2012).'
+        }
+      ]
+    }
   }
 };
 
 const aboutPage: Record<Locale, StaticPage> = {
   en: {
-    title: 'About this project',
+    title: 'About',
     intro:
-      'This single-page assessment mirrors the fixed vs. growth mindset questionnaire shared in Carol S. Dweck’s book “Mindset”. The experience is intentionally lightweight: choose your language, answer the statements, and get an instant score.',
+      'This site mirrors the fixed vs. growth mindset questionnaire from Carol S. Dweck’s book “Mindset.” Here you can also see who built it and how we handle privacy.',
     sections: [
       {
         title: 'What to expect',
@@ -556,17 +658,42 @@ const aboutPage: Record<Locale, StaticPage> = {
         ]
       },
       {
-        title: 'Why it feels like sleep-test.org',
+        title: 'Made by',
         body: [
-          'The flow borrows the clean, CTA-first layout from sleep-test.org so you can start quickly, stay focused on one statement at a time, and share the outcome just as easily.'
+          'Made by DMZ DATA AS, a healthtech and advisory company.',
+          'Built pro bono in Porsgrunn.'
+        ]
+      },
+      {
+        title: 'Explore more from DMZ DATA',
+        body: [
+          'Explore DMZ DATA creations at www.dmz.no.',
+          'Test your sleep patterns at https://www.sleep-test.org.',
+          'Learn Google web search with the app: https://apps.apple.com/no/app/toiletlearn-web-search/id6748481089.',
+          'Learn ChatGPT with the app: https://apps.apple.com/us/app/toiletlearn-web-search/id6748926636?platform=iphone.',
+          'Make your Homey smart home more fun with DadJokes: https://homey.app/no-no/app/com.dmz.dadjokesplus/DadJokes-Plus/test/.'
+        ]
+      },
+      {
+        title: 'Privacy policy',
+        body: [
+          'Responsible for the site: DMZ DATA AS. Contact point for privacy and general inquiries: kontor@dmz.no.',
+          'We take privacy seriously. This declaration explains how we process information when you use the site. By using it you confirm that you have read and accepted these terms. The site is designed so schools can use the service without providing personal data.',
+          'What data we process: we do not collect names, email addresses, or other directly identifiable information. We use no marketing cookies, third-party tracking scripts, or profiling.',
+          'Purpose and legal basis: the purpose is to deliver the service and improve quality. The legal basis is legitimate interest (GDPR art. 6(1)(f)) to operate a secure, well-functioning solution without processing personal data. Any technical logs do not include personal data.',
+          'Sharing and transfer: we do not share data with third parties. If we use processors for operations, they will be contractually obliged to protect data and not use it for their own purposes.',
+          'School use and children: the service can be used in schools without providing student data. Teachers and pupils can read and use the site without registration. No personal data is processed beyond what is strictly necessary for technical operation.',
+          'Cookies: we use no unnecessary cookies. If we later introduce functional cookies (e.g., for language), we will update this declaration and request consent where required.',
+          'Your rights and contact: if you have questions, want insight into technical information, or want deletion, contact us at kontor@dmz.no. You can also complain to the Norwegian Data Protection Authority.',
+          'Changes: we may update this declaration when needed. Significant changes will be published here.'
         ]
       }
     ]
   },
   no: {
-    title: 'Om prosjektet',
+    title: 'Om',
     intro:
-      'Dette enkle skjemaet speiler spørresettet for fastlåst vs. vekstmindset fra Carol S. Dwecks bok “Mindset”. Opplevelsen er lett: velg språk, svar på påstandene og få en umiddelbar score.',
+      'Denne nettsiden speiler spørresettet for fastlåst vs. vekstmindset fra Carol S. Dwecks bok “Mindset”. Her finner du også hvem som står bak og hvordan vi håndterer personvern.',
     sections: [
       {
         title: 'Hva du kan forvente',
@@ -576,17 +703,42 @@ const aboutPage: Record<Locale, StaticPage> = {
         ]
       },
       {
-        title: 'Hvorfor den ligner sleep-test.org',
+        title: 'Laget av',
         body: [
-          'Flyten låner den rene, handlingsrettede opplevelsen fra sleep-test.org slik at du kan starte raskt, holde fokus på én påstand av gangen og dele resultatet like enkelt.'
+          'Laget av DMZ DATA AS, helsetech og rådgivingsselskap.',
+          'Laget på dugnad i Porsgrunn.'
+        ]
+      },
+      {
+        title: 'Utforsk mer fra DMZ DATA',
+        body: [
+          'Utforsk DMZ DATA-underverker på www.dmz.no.',
+          'Test søvnmønsteret ditt: https://www.sleep-test.org.',
+          'App for å lære Google web search: https://apps.apple.com/no/app/toiletlearn-web-search/id6748481089.',
+          'App for å lære ChatGPT: https://apps.apple.com/us/app/toiletlearn-web-search/id6748926636?platform=iphone.',
+          'Gjør Homey smarthuset ditt litt mer gøy med DadJokes: https://homey.app/no-no/app/com.dmz.dadjokesplus/DadJokes-Plus/test/.'
+        ]
+      },
+      {
+        title: 'Personvernerklæring',
+        body: [
+          'Ansvarlig for nettsiden er DMZ DATA AS. Kontaktpunkt for personvern og generelle henvendelser: kontor@dmz.no.',
+          'Vi tar personvern på alvor. Denne erklæringen forklarer hvordan vi behandler opplysninger når du bruker nettsiden. Ved å bruke nettstedet bekrefter du at du har lest og akseptert disse vilkårene. Nettstedet er designet slik at skoler kan bruke tjenesten uten å oppgi personopplysninger.',
+          'Hvilke data vi behandler: Vi samler ikke inn navn, e-postadresse eller annen direkte identifiserbar informasjon. Vi bruker ingen markedsførings-cookies, tredjeparts sporingsskript eller profilering.',
+          'Formål og behandlingsgrunnlag: Formålet er å levere tjenesten og forbedre kvaliteten. Behandlingsgrunnlaget er berettiget interesse (GDPR art. 6(1)(f)) i å drive en sikker og velfungerende løsning uten behandling av personopplysninger. Eventuelle tekniske logger kan inneholder ikke personopplysninger.',
+          'Deling og overføring: Vi deler ikke data med tredjeparter. Dersom vi bruker underleverandører (databehandlere) for drift, vil de være kontraktsmessig forpliktet til å beskytte data og ikke bruke dem til egne formål.',
+          'Skolebruk og barn: Tjenesten kan brukes i skole uten å oppgi elevdata. Lærere og elever kan lese og bruke nettstedet uten registrering. Det behandles ikke personopplysninger utover det som er strengt nødvendig for teknisk drift.',
+          'Informasjonskapsler (cookies): Vi bruker ingen unødvendige cookies. Dersom vi i fremtiden innfører funksjonelle cookies (f.eks. for språkvalg), vil vi oppdatere denne erklæringen og be om samtykke der det kreves.',
+          'Dine rettigheter og kontakt: Har du spørsmål, ønsker innsyn i tekniske opplysninger, eller vil be om sletting, kontakt oss på kontor@dmz.no. Du kan også klage til Datatilsynet.',
+          'Endringer: Vi kan oppdatere denne erklæringen ved behov. Vesentlige endringer publiseres her.'
         ]
       }
     ]
   },
   pt: {
-    title: 'Sobre o projeto',
+    title: 'Sobre',
     intro:
-      'Este questionário reproduz a avaliação de mindset fixo x crescimento apresentada no livro “Mindset”, de Carol S. Dweck. A experiência é leve: escolha o idioma, responda às afirmações e veja o resultado imediatamente.',
+      'Este site reflete o questionário de mindset fixo x crescimento do livro “Mindset”, de Carol S. Dweck. Aqui você também vê quem construiu o site e como tratamos privacidade.',
     sections: [
       {
         title: 'O que esperar',
@@ -596,64 +748,35 @@ const aboutPage: Record<Locale, StaticPage> = {
         ]
       },
       {
-        title: 'Por que lembra o sleep-test.org',
+        title: 'Feito por',
         body: [
-          'O fluxo aproveita o layout claro e direto do sleep-test.org para que você comece rápido, responda uma afirmação por vez e compartilhe o resultado com a mesma facilidade.'
-        ]
-      }
-    ]
-  }
-};
-
-const privacyPage: Record<Locale, StaticPage> = {
-  en: {
-    title: 'Privacy',
-    intro: 'We designed this test to work without storing or transmitting personal data.',
-    sections: [
-      {
-        title: 'No accounts, no tracking',
-        body: [
-          'All scoring happens in the browser. We do not use cookies for analytics or ads, and we do not persist your answers.',
-          'Sharing is optional; if you tap share, only the result URL and title are sent to the network you choose.'
+          'Feito pela DMZ DATA AS, uma empresa de healthtech e consultoria.',
+          'Construído em mutirão em Porsgrunn.'
         ]
       },
       {
-        title: 'Open source',
-        body: ['The codebase is available on GitHub so you can inspect, fork, or self-host the experience.']
-      }
-    ]
-  },
-  no: {
-    title: 'Personvern',
-    intro: 'Vi har laget testen slik at den fungerer uten å lagre eller sende persondata.',
-    sections: [
-      {
-        title: 'Ingen konto, ingen sporing',
+        title: 'Explore mais da DMZ DATA',
         body: [
-          'All beregning skjer i nettleseren. Vi bruker ikke informasjonskapsler til analyse eller annonser, og svarene dine lagres ikke.',
-          'Deling er valgfritt; hvis du trykker del, sendes kun resultat-lenken og tittelen til nettverket du velger.'
+          'Explore as criações da DMZ DATA em www.dmz.no.',
+          'Teste seu sono em https://www.sleep-test.org.',
+          'Aprenda busca do Google com o app: https://apps.apple.com/no/app/toiletlearn-web-search/id6748481089.',
+          'Aprenda ChatGPT com o app: https://apps.apple.com/us/app/toiletlearn-web-search/id6748926636?platform=iphone.',
+          'Deixe sua casa inteligente Homey mais divertida com DadJokes: https://homey.app/no-no/app/com.dmz.dadjokesplus/DadJokes-Plus/test/.'
         ]
       },
       {
-        title: 'Åpen kildekode',
-        body: ['Kodebasen ligger på GitHub slik at du kan inspisere, forke eller drifte den selv.']
-      }
-    ]
-  },
-  pt: {
-    title: 'Privacidade',
-    intro: 'O teste foi pensado para funcionar sem armazenar ou transmitir dados pessoais.',
-    sections: [
-      {
-        title: 'Sem conta, sem rastreamento',
+        title: 'Política de privacidade',
         body: [
-          'Todo o cálculo acontece no navegador. Não usamos cookies para análises ou anúncios, e suas respostas não são salvas.',
-          'Compartilhar é opcional; ao compartilhar, apenas a URL e o título do resultado são enviados para a rede escolhida.'
+          'Responsável pelo site: DMZ DATA AS. Contato para privacidade e dúvidas gerais: kontor@dmz.no.',
+          'Levamos privacidade a sério. Esta declaração explica como tratamos informações ao usar o site. Ao usar o site, você confirma que leu e aceitou estes termos. O site foi desenhado para que escolas possam usar o serviço sem fornecer dados pessoais.',
+          'Quais dados processamos: não coletamos nome, e-mail ou outras informações diretamente identificáveis. Não usamos cookies de marketing, scripts de rastreamento de terceiros ou criação de perfis.',
+          'Finalidade e base legal: o objetivo é entregar o serviço e melhorar a qualidade. A base é interesse legítimo (GDPR art. 6(1)(f)) para operar uma solução segura e funcional sem processar dados pessoais. Quaisquer logs técnicos não incluem dados pessoais.',
+          'Compartilhamento e transferência: não compartilhamos dados com terceiros. Se usarmos operadores (processadores) para a operação, eles serão contratualmente obrigados a proteger os dados e não utilizá-los para fins próprios.',
+          'Uso em escolas e crianças: o serviço pode ser usado em escolas sem informar dados de alunos. Professores e alunos podem acessar e usar o site sem registro. Não tratamos dados pessoais além do estritamente necessário para a operação técnica.',
+          'Cookies: não usamos cookies desnecessários. Se no futuro adicionarmos cookies funcionais (por exemplo, para lembrar idioma), atualizaremos esta declaração e pediremos consentimento quando exigido.',
+          'Seus direitos e contato: dúvidas, pedidos de acesso a informações técnicas ou solicitações de exclusão podem ser enviados para kontor@dmz.no. Você também pode registrar reclamação na autoridade de proteção de dados.',
+          'Mudanças: podemos atualizar esta declaração quando necessário. Mudanças relevantes serão publicadas aqui.'
         ]
-      },
-      {
-        title: 'Código aberto',
-        body: ['O código está no GitHub para que você possa revisar, fazer fork ou hospedar por conta própria.']
       }
     ]
   }
@@ -725,6 +848,21 @@ const testInfoPage: Record<Locale, StaticPage> = {
   }
 };
 
+const footerCopy: Record<Locale, FooterCopy> = {
+  en: {
+    copyright: '© 2025 DMZ DATA AS',
+    aboutLink: 'About, terms and contact'
+  },
+  no: {
+    copyright: '© 2025 DMZ DATA AS',
+    aboutLink: 'Om, vilkår og kontakt'
+  },
+  pt: {
+    copyright: '© 2025 DMZ DATA AS',
+    aboutLink: 'Sobre, termos e contato'
+  }
+};
+
 export const dictionary: Record<Locale, Dictionary> = {
   en: {
     meta: meta.en,
@@ -737,8 +875,8 @@ export const dictionary: Record<Locale, Dictionary> = {
     },
     results: resultCopy.en,
     about: aboutPage.en,
-    privacy: privacyPage.en,
-    testInfo: testInfoPage.en
+    testInfo: testInfoPage.en,
+    footer: footerCopy.en
   },
   no: {
     meta: meta.no,
@@ -751,8 +889,8 @@ export const dictionary: Record<Locale, Dictionary> = {
     },
     results: resultCopy.no,
     about: aboutPage.no,
-    privacy: privacyPage.no,
-    testInfo: testInfoPage.no
+    testInfo: testInfoPage.no,
+    footer: footerCopy.no
   },
   pt: {
     meta: meta.pt,
@@ -765,8 +903,8 @@ export const dictionary: Record<Locale, Dictionary> = {
     },
     results: resultCopy.pt,
     about: aboutPage.pt,
-    privacy: privacyPage.pt,
-    testInfo: testInfoPage.pt
+    testInfo: testInfoPage.pt,
+    footer: footerCopy.pt
   }
 };
 
