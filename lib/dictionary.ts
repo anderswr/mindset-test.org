@@ -677,8 +677,6 @@ const aboutPage: Record<Locale, StaticPage> = {
       {
         title: 'Privacy policy',
         body: [
-          'Made by DMZ DATA AS, a healthtech and advisory company.',
-          'Built pro bono in Porsgrunn.',
           'Responsible for the site: DMZ DATA AS. Contact point for privacy and general inquiries: kontor@dmz.no.',
           'We take privacy seriously. This declaration explains how we process information when you use the site. By using it you confirm that you have read and accepted these terms. The site is designed so schools can use the service without providing personal data.',
           'What data we process: we do not collect names, email addresses, or other directly identifiable information. We use no marketing cookies, third-party tracking scripts, or profiling.',
@@ -724,8 +722,6 @@ const aboutPage: Record<Locale, StaticPage> = {
       {
         title: 'Personvernerklæring',
         body: [
-          'Laget av DMZ DATA AS, helsetech og rådgivingsselskap.',
-          'Laget på dugnad i Porsgrunn.',
           'Ansvarlig for nettsiden er DMZ DATA AS. Kontaktpunkt for personvern og generelle henvendelser: kontor@dmz.no.',
           'Vi tar personvern på alvor. Denne erklæringen forklarer hvordan vi behandler opplysninger når du bruker nettsiden. Ved å bruke nettstedet bekrefter du at du har lest og akseptert disse vilkårene. Nettstedet er designet slik at skoler kan bruke tjenesten uten å oppgi personopplysninger.',
           'Hvilke data vi behandler: Vi samler ikke inn navn, e-postadresse eller annen direkte identifiserbar informasjon. Vi bruker ingen markedsførings-cookies, tredjeparts sporingsskript eller profilering.',
@@ -771,8 +767,6 @@ const aboutPage: Record<Locale, StaticPage> = {
       {
         title: 'Política de privacidade',
         body: [
-          'Feito pela DMZ DATA AS, uma empresa de healthtech e consultoria.',
-          'Construído em mutirão em Porsgrunn.',
           'Responsável pelo site: DMZ DATA AS. Contato para privacidade e dúvidas gerais: kontor@dmz.no.',
           'Levamos privacidade a sério. Esta declaração explica como tratamos informações ao usar o site. Ao usar o site, você confirma que leu e aceitou estes termos. O site foi desenhado para que escolas possam usar o serviço sem fornecer dados pessoais.',
           'Quais dados processamos: não coletamos nome, e-mail ou outras informações diretamente identificáveis. Não usamos cookies de marketing, scripts de rastreamento de terceiros ou criação de perfis.',

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { incrementCompletionCount } from '../../../lib/completionCounter';
 import { getDictionary, getResultBucket, type Locale } from '../../../lib/dictionary';
 
 function buildShareUrl(path: string, text: string) {
@@ -31,11 +32,11 @@ export default function ResultClient({ locale }: { locale: Locale }) {
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const key = `mindset-counted-${locale}-${score}`;
+    const key = `mindset-counted-${score}`;
     if (sessionStorage.getItem(key)) return;
     sessionStorage.setItem(key, '1');
-    fetch('/api/completions', { method: 'POST' }).catch(() => {});
-  }, [locale, score]);
+    incrementCompletionCount();
+  }, [score]);
 
   return (
     <main className="result-page">
