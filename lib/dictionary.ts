@@ -646,9 +646,9 @@ const resultCopy: Record<Locale, Dictionary['results']> = {
 
 const aboutPage: Record<Locale, StaticPage> = {
   en: {
-    title: 'About & privacy',
+    title: 'About',
     intro:
-      'This assessment mirrors Carol S. Dweck’s fixed vs. growth mindset questionnaire with a lightweight, multilingual flow. Here you can also see who built it and how we handle privacy.',
+      'This site mirrors the fixed vs. growth mindset questionnaire from Carol S. Dweck’s book “Mindset.” Here you can also see who built it and how we handle privacy.',
     sections: [
       {
         title: 'What to expect',
@@ -658,55 +658,44 @@ const aboutPage: Record<Locale, StaticPage> = {
         ]
       },
       {
-        title: 'Why it feels like sleep-test.org',
-        body: [
-          'The flow borrows the clean, CTA-first layout from sleep-test.org so you can start quickly, stay focused on one statement at a time, and share the outcome just as easily.'
-        ]
-      },
-      {
         title: 'Made by',
         body: [
-          'Made by DMZ DATA AS.',
-          'Built pro bono in Porsgrunn with a focus on healthtech, sleeptech, and AI.'
-        ]
-      },
-      {
-        title: 'Contact',
-        body: [
-          'DMZ DATA AS is responsible for www.sleep-test.org. Contact point for privacy and general inquiries: kontor@dmz.no.'
+          'Made by DMZ DATA AS, a healthtech and advisory company.',
+          'Built pro bono in Porsgrunn.'
         ]
       },
       {
         title: 'Explore more from DMZ DATA',
         body: [
           'Explore DMZ DATA creations at www.dmz.no.',
-          'Try the app for learning Google web search (LINK), the app for learning ChatGPT (LINK), and make your Homey smart home more fun with DadJokes (LINK).'
+          'Test your sleep patterns at https://www.sleep-test.org.',
+          'Learn Google web search with the app: https://apps.apple.com/no/app/toiletlearn-web-search/id6748481089.',
+          'Learn ChatGPT with the app: https://apps.apple.com/us/app/toiletlearn-web-search/id6748926636?platform=iphone.',
+          'Make your Homey smart home more fun with DadJokes: https://homey.app/no-no/app/com.dmz.dadjokesplus/DadJokes-Plus/test/.'
         ]
       },
       {
         title: 'Privacy policy',
         body: [
-          'Made by DMZ DATA AS.',
-          'Built pro bono in Porsgrunn, focused on healthtech/sleeptech and AI.',
-          'DMZ DATA AS is responsible for www.sleep-test.org. Contact point for privacy and general inquiries: kontor@dmz.no.',
-          'Explore DMZ DATA creations at www.dmz.no, the app for learning Google web search (LINK), the app for learning ChatGPT (LINK), and make your Homey smart home more fun with DadJokes (LINK).',
-          'We take privacy seriously. This declaration explains how we process information when you use www.sleep-test.org. By using the site you confirm you have read and accepted these terms. The site is designed so schools can use it without supplying personal data.',
-          'What we process: we do not collect names, email addresses, or other directly identifiable information. To show and remember results, only a technical ID and an answer summary are used. We use no marketing cookies, third-party tracking scripts, or profiling.',
-          'Purpose and legal basis: the purpose is to deliver the service and improve quality. The basis is legitimate interest (GDPR art. 6(1)(f)) to run a secure, well-functioning solution without handling personal data. Technical logs may be processed for troubleshooting and security.',
-          'Storage and deletion: technical IDs and summaries are kept only as long as needed for the stated purpose. If you think content should be deleted, contact us at kontor@dmz.no.',
-          'Sharing and transfer: we do not share data with third parties. If we use processors for operations, they are contractually bound to protect data and not use it for their own purposes.',
+          'Made by DMZ DATA AS, a healthtech and advisory company.',
+          'Built pro bono in Porsgrunn.',
+          'Responsible for the site: DMZ DATA AS. Contact point for privacy and general inquiries: kontor@dmz.no.',
+          'We take privacy seriously. This declaration explains how we process information when you use the site. By using it you confirm that you have read and accepted these terms. The site is designed so schools can use the service without providing personal data.',
+          'What data we process: we do not collect names, email addresses, or other directly identifiable information. We use no marketing cookies, third-party tracking scripts, or profiling.',
+          'Purpose and legal basis: the purpose is to deliver the service and improve quality. The legal basis is legitimate interest (GDPR art. 6(1)(f)) to operate a secure, well-functioning solution without processing personal data. Any technical logs do not include personal data.',
+          'Sharing and transfer: we do not share data with third parties. If we use processors for operations, they will be contractually obliged to protect data and not use it for their own purposes.',
           'School use and children: the service can be used in schools without providing student data. Teachers and pupils can read and use the site without registration. No personal data is processed beyond what is strictly necessary for technical operation.',
-          'Cookies: we use no unnecessary cookies. If functional cookies are introduced later (e.g., to remember language), we will update this declaration and request consent where required.',
-          'Your rights and contact: questions, requests for access to technical information, or deletion requests can be sent to kontor@dmz.no. You can also complain to the Norwegian Data Protection Authority.',
+          'Cookies: we use no unnecessary cookies. If we later introduce functional cookies (e.g., for language), we will update this declaration and request consent where required.',
+          'Your rights and contact: if you have questions, want insight into technical information, or want deletion, contact us at kontor@dmz.no. You can also complain to the Norwegian Data Protection Authority.',
           'Changes: we may update this declaration when needed. Significant changes will be published here.'
         ]
       }
     ]
   },
   no: {
-    title: 'Om og personvern',
+    title: 'Om',
     intro:
-      'Dette enkle skjemaet speiler spørresettet for fastlåst vs. vekstmindset fra Carol S. Dwecks bok “Mindset”. Her finner du også hvem som står bak og hvordan vi håndterer personvern.',
+      'Denne nettsiden speiler spørresettet for fastlåst vs. vekstmindset fra Carol S. Dwecks bok “Mindset”. Her finner du også hvem som står bak og hvordan vi håndterer personvern.',
     sections: [
       {
         title: 'Hva du kan forvente',
@@ -716,42 +705,31 @@ const aboutPage: Record<Locale, StaticPage> = {
         ]
       },
       {
-        title: 'Hvorfor den ligner sleep-test.org',
-        body: [
-          'Flyten låner den rene, handlingsrettede opplevelsen fra sleep-test.org slik at du kan starte raskt, holde fokus på én påstand av gangen og dele resultatet like enkelt.'
-        ]
-      },
-      {
         title: 'Laget av',
         body: [
-          'Laget av DMZ DATA AS.',
-          'Laget på dugnad i Porsgrunn, helsetech/søvntech og AI.'
-        ]
-      },
-      {
-        title: 'Kontakt',
-        body: [
-          'Ansvarlig for www.sleep-test.org er DMZ DATA AS. Kontaktpunkt for personvern og generelle henvendelser: kontor@dmz.no.'
+          'Laget av DMZ DATA AS, helsetech og rådgivingsselskap.',
+          'Laget på dugnad i Porsgrunn.'
         ]
       },
       {
         title: 'Utforsk mer fra DMZ DATA',
         body: [
           'Utforsk DMZ DATA-underverker på www.dmz.no.',
-          'App for å lære Google web search (LINK), App for å lære ChatGPT (LINK) og gjør Homey smarthuset ditt litt mer gøy med DadJokes (LINK).'
+          'Test søvnmønsteret ditt: https://www.sleep-test.org.',
+          'App for å lære Google web search: https://apps.apple.com/no/app/toiletlearn-web-search/id6748481089.',
+          'App for å lære ChatGPT: https://apps.apple.com/us/app/toiletlearn-web-search/id6748926636?platform=iphone.',
+          'Gjør Homey smarthuset ditt litt mer gøy med DadJokes: https://homey.app/no-no/app/com.dmz.dadjokesplus/DadJokes-Plus/test/.'
         ]
       },
       {
         title: 'Personvernerklæring',
         body: [
-          'Laget av DMZ DATA AS.',
-          'Laget på dugnad i Porsgrunn, helsetech/søvntech og AI.',
-          'Ansvarlig for www.sleep-test.org er DMZ DATA AS. Kontaktpunkt for personvern og generelle henvendelser: kontor@dmz.no.',
-          'Utforsk DMZ DATA-underverker på www.dmz.no, App for å lære Google web search (LINK), App for å lære ChatGPT (LINK) og gjør Homey smarthuset ditt litt mer gøy med DadJokes (LINK).',
-          'Vi tar personvern på alvor. Denne erklæringen forklarer hvordan vi behandler opplysninger når du bruker www.sleep-test.org. Ved å bruke nettstedet bekrefter du at du har lest og akseptert disse vilkårene. Nettstedet er designet slik at skoler kan bruke tjenesten uten å oppgi personopplysninger.',
-          'Hvilke data vi behandler: Vi samler ikke inn navn, e-postadresse eller annen direkte identifiserbar informasjon. For å vise og huske resultater brukes kun en teknisk generert ID lagret sammen med en oppsummering av svarene. Vi bruker ingen markedsførings-cookies, tredjeparts sporingsskript eller profilering.',
-          'Formål og behandlingsgrunnlag: Formålet er å levere tjenesten og forbedre kvaliteten. Behandlingsgrunnlaget er berettiget interesse (GDPR art. 6(1)(f)) i å drive en sikker og velfungerende løsning uten behandling av personopplysninger. Eventuelle tekniske logger kan behandles for feilsøking og sikkerhet.',
-          'Lagring og sletting: Tekniske ID-er og resultatoppsummeringer lagres bare så lenge det er nødvendig for formålet. Dersom du mener innhold bør slettes, kan du kontakte oss på kontor@dmz.no.',
+          'Laget av DMZ DATA AS, helsetech og rådgivingsselskap.',
+          'Laget på dugnad i Porsgrunn.',
+          'Ansvarlig for nettsiden er DMZ DATA AS. Kontaktpunkt for personvern og generelle henvendelser: kontor@dmz.no.',
+          'Vi tar personvern på alvor. Denne erklæringen forklarer hvordan vi behandler opplysninger når du bruker nettsiden. Ved å bruke nettstedet bekrefter du at du har lest og akseptert disse vilkårene. Nettstedet er designet slik at skoler kan bruke tjenesten uten å oppgi personopplysninger.',
+          'Hvilke data vi behandler: Vi samler ikke inn navn, e-postadresse eller annen direkte identifiserbar informasjon. Vi bruker ingen markedsførings-cookies, tredjeparts sporingsskript eller profilering.',
+          'Formål og behandlingsgrunnlag: Formålet er å levere tjenesten og forbedre kvaliteten. Behandlingsgrunnlaget er berettiget interesse (GDPR art. 6(1)(f)) i å drive en sikker og velfungerende løsning uten behandling av personopplysninger. Eventuelle tekniske logger kan inneholder ikke personopplysninger.',
           'Deling og overføring: Vi deler ikke data med tredjeparter. Dersom vi bruker underleverandører (databehandlere) for drift, vil de være kontraktsmessig forpliktet til å beskytte data og ikke bruke dem til egne formål.',
           'Skolebruk og barn: Tjenesten kan brukes i skole uten å oppgi elevdata. Lærere og elever kan lese og bruke nettstedet uten registrering. Det behandles ikke personopplysninger utover det som er strengt nødvendig for teknisk drift.',
           'Informasjonskapsler (cookies): Vi bruker ingen unødvendige cookies. Dersom vi i fremtiden innfører funksjonelle cookies (f.eks. for språkvalg), vil vi oppdatere denne erklæringen og be om samtykke der det kreves.',
@@ -762,9 +740,9 @@ const aboutPage: Record<Locale, StaticPage> = {
     ]
   },
   pt: {
-    title: 'Sobre e privacidade',
+    title: 'Sobre',
     intro:
-      'Este questionário segue a avaliação de mindset fixo x crescimento do livro “Mindset”, de Carol S. Dweck. Aqui você também vê quem construiu o site e como tratamos privacidade.',
+      'Este site reflete o questionário de mindset fixo x crescimento do livro “Mindset”, de Carol S. Dweck. Aqui você também vê quem construiu o site e como tratamos privacidade.',
     sections: [
       {
         title: 'O que esperar',
@@ -774,42 +752,31 @@ const aboutPage: Record<Locale, StaticPage> = {
         ]
       },
       {
-        title: 'Por que lembra o sleep-test.org',
-        body: [
-          'O fluxo aproveita o layout claro e direto do sleep-test.org para que você comece rápido, responda uma afirmação por vez e compartilhe o resultado com a mesma facilidade.'
-        ]
-      },
-      {
         title: 'Feito por',
         body: [
-          'Feito pela DMZ DATA AS.',
-          'Construído em mutirão em Porsgrunn, com foco em healthtech, sleeptech e IA.'
-        ]
-      },
-      {
-        title: 'Contato',
-        body: [
-          'A DMZ DATA AS é responsável por www.sleep-test.org. Contato para privacidade e dúvidas gerais: kontor@dmz.no.'
+          'Feito pela DMZ DATA AS, uma empresa de healthtech e consultoria.',
+          'Construído em mutirão em Porsgrunn.'
         ]
       },
       {
         title: 'Explore mais da DMZ DATA',
         body: [
           'Explore as criações da DMZ DATA em www.dmz.no.',
-          'Experimente o app para aprender a busca do Google (LINK), o app para aprender ChatGPT (LINK) e deixe sua casa inteligente Homey mais divertida com DadJokes (LINK).'
+          'Teste seu sono em https://www.sleep-test.org.',
+          'Aprenda busca do Google com o app: https://apps.apple.com/no/app/toiletlearn-web-search/id6748481089.',
+          'Aprenda ChatGPT com o app: https://apps.apple.com/us/app/toiletlearn-web-search/id6748926636?platform=iphone.',
+          'Deixe sua casa inteligente Homey mais divertida com DadJokes: https://homey.app/no-no/app/com.dmz.dadjokesplus/DadJokes-Plus/test/.'
         ]
       },
       {
         title: 'Política de privacidade',
         body: [
-          'Feito pela DMZ DATA AS.',
-          'Construído em mutirão em Porsgrunn, com foco em healthtech, sleeptech e IA.',
-          'A DMZ DATA AS é responsável por www.sleep-test.org. Contato para privacidade e dúvidas gerais: kontor@dmz.no.',
-          'Explore as criações da DMZ DATA em www.dmz.no, o app para aprender a busca do Google (LINK), o app para aprender ChatGPT (LINK) e deixe sua casa inteligente Homey mais divertida com DadJokes (LINK).',
-          'Levamos privacidade a sério. Esta declaração explica como tratamos informações ao usar www.sleep-test.org. Ao usar o site, você confirma que leu e aceitou estes termos. O site foi desenhado para que escolas possam usar o serviço sem fornecer dados pessoais.',
-          'Quais dados processamos: não coletamos nome, e-mail ou outras informações diretamente identificáveis. Para exibir e lembrar resultados, usamos apenas um ID técnico gerado com um resumo das respostas. Não usamos cookies de marketing, scripts de rastreamento de terceiros ou criação de perfis.',
-          'Finalidade e base legal: o objetivo é entregar o serviço e melhorar a qualidade. A base é interesse legítimo (GDPR art. 6(1)(f)) para operar uma solução segura e funcional sem processar dados pessoais. Logs técnicos podem ser tratados para depuração e segurança.',
-          'Armazenamento e exclusão: IDs técnicos e resumos são guardados somente pelo tempo necessário. Se você achar que algo deve ser removido, escreva para kontor@dmz.no.',
+          'Feito pela DMZ DATA AS, uma empresa de healthtech e consultoria.',
+          'Construído em mutirão em Porsgrunn.',
+          'Responsável pelo site: DMZ DATA AS. Contato para privacidade e dúvidas gerais: kontor@dmz.no.',
+          'Levamos privacidade a sério. Esta declaração explica como tratamos informações ao usar o site. Ao usar o site, você confirma que leu e aceitou estes termos. O site foi desenhado para que escolas possam usar o serviço sem fornecer dados pessoais.',
+          'Quais dados processamos: não coletamos nome, e-mail ou outras informações diretamente identificáveis. Não usamos cookies de marketing, scripts de rastreamento de terceiros ou criação de perfis.',
+          'Finalidade e base legal: o objetivo é entregar o serviço e melhorar a qualidade. A base é interesse legítimo (GDPR art. 6(1)(f)) para operar uma solução segura e funcional sem processar dados pessoais. Quaisquer logs técnicos não incluem dados pessoais.',
           'Compartilhamento e transferência: não compartilhamos dados com terceiros. Se usarmos operadores (processadores) para a operação, eles serão contratualmente obrigados a proteger os dados e não utilizá-los para fins próprios.',
           'Uso em escolas e crianças: o serviço pode ser usado em escolas sem informar dados de alunos. Professores e alunos podem acessar e usar o site sem registro. Não tratamos dados pessoais além do estritamente necessário para a operação técnica.',
           'Cookies: não usamos cookies desnecessários. Se no futuro adicionarmos cookies funcionais (por exemplo, para lembrar idioma), atualizaremos esta declaração e pediremos consentimento quando exigido.',
